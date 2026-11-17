@@ -31,7 +31,7 @@ export async function requestGeminiInterpretation(
   const apiKey = process.env.GEMINI_API_KEY?.trim();
   const isMock = process.env.MOCK_AI === "true";
   const timeoutMs = parseInt(process.env.GEMINI_TIMEOUT_MS || "15000", 10);
-  const modelName = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+  const modelName = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 
   // Check Mock AI mode
   if (isMock) {
@@ -183,12 +183,19 @@ YÊU CẦU BẮT BUỘC:
       };
     }
 
-    if (errorMsg.includes("429") || errorMsg.includes("quota") || errorMsg.includes("ResourceExhausted")) {
+    if (
+      errorMsg.includes("429") ||
+      errorMsg.includes("quota") ||
+      errorMsg.includes("ResourceExhausted") ||
+      errorMsg.includes("503") ||
+      errorMsg.includes("high demand") ||
+      errorMsg.includes("UNAVAILABLE")
+    ) {
       return {
         success: false,
         status: "rate_limited",
         errorCode: "RATE_LIMITED",
-        errorMessage: "Hạn ngạch AI hiện tại tạm thời đã đầy. Bạn có thể thử lại sau vài phút.",
+        errorMessage: "Dịch vụ AI tạm thời nhận lượng yêu cầu lớn (503/429). Hệ thống tự động chuyển sang chế độ giải mã truyền thống.",
       };
     }
 
