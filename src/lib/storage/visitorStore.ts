@@ -18,7 +18,6 @@ let memoryLogsCache: VisitorLogRecord[] = [];
 let isCacheLoaded = false;
 
 function getStoreFilePath(): string {
-  // On Vercel serverless, process.cwd() is read-only in some runtimes, /tmp is writable
   if (process.env.VERCEL) {
     return path.join("/tmp", "visitors_store.json");
   }
@@ -58,7 +57,7 @@ function saveLocalLogs(logs: VisitorLogRecord[]) {
     }
     fs.writeFileSync(filePath, JSON.stringify(logs, null, 2), "utf-8");
   } catch (err) {
-    console.warn("[VisitorStore] Could not persist to file system (read-only environment), retained in memory", err);
+    console.warn("[VisitorStore] Could not persist to file system, retained in memory", err);
   }
 }
 
@@ -123,7 +122,7 @@ export async function recordVisitorEntry(
     }
   }
 
-  // Always update local cache for ultra-fast local response
+  // Update local cache
   const localLogs = loadLocalLogs();
   const existingIdx = localLogs.findIndex((l) => l.sessionId === sessionId);
   if (existingIdx >= 0) {
@@ -132,9 +131,50 @@ export async function recordVisitorEntry(
     return localLogs[existingIdx];
   } else {
     localLogs.unshift(newRecord);
-    // Keep last 500 entries
     saveLocalLogs(localLogs.slice(0, 500));
     return newRecord;
+  }
+}
+
+export async function updateVisitorQuestion(
+  sessionId: string,
+  data: {
+    visitorName?: string;
+    question: string;
+    category: QuestionCategory;
+    spreadType?: SpreadType;
+  }
+): Promise<void> {
+  const supabase = getSupabaseConfig();
+  if (supabase) {
+    try {
+      await fetch(`${supabase.url}/rest/v1/visitors?session_id=eq.${encodeURIComponent(sessionId)}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: supabase.key,
+          Authorization: `Bearer ${supabase.key}`,
+        },
+        body: JSON.stringify({
+          question: data.question,
+          category: data.category,
+          spread_type: data.spreadType,
+          visitor_name: data.visitorName,
+        }),
+      });
+    } catch (e) {
+      console.error("[VisitorStore] Supabase question update failed", e);
+    }
+  }
+
+  const localLogs = loadLocalLogs();
+  const target = localLogs.find((l) => l.sessionId === sessionId);
+  if (target) {
+    target.question = data.question;
+    target.category = data.category;
+    if (data.spreadType) target.spreadType = data.spreadType;
+    if (data.visitorName) target.visitorName = data.visitorName;
+    saveLocalLogs(localLogs);
   }
 }
 
@@ -155,27 +195,60 @@ export async function recordReadingComplete(
 
   if (supabase) {
     try {
-      await fetch(`${supabase.url}/rest/v1/visitors?session_id=eq.${encodeURIComponent(sessionId)}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: supabase.key,
-          Authorization: `Bearer ${supabase.key}`,
-        },
-        body: JSON.stringify({
-          status: "completed",
-          completed_at: completedAt,
-          visitor_name: readingData.visitorName,
-          question: readingData.question,
-          category: readingData.category,
-          spread_type: readingData.spreadType,
-          cards: readingData.cards,
-          ai_title: readingData.aiTitle,
-          ai_overview: readingData.aiOverview,
-        }),
-      });
+      const patchRes = await fetch(
+        `${supabase.url}/rest/v1/visitors?session_id=eq.${encodeURIComponent(sessionId)}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: supabase.key,
+            Authorization: `Bearer ${supabase.key}`,
+            Prefer: "return=representation",
+          },
+          body: JSON.stringify({
+            status: "completed",
+            completed_at: completedAt,
+            visitor_name: readingData.visitorName,
+            question: readingData.question,
+            category: readingData.category,
+            spread_type: readingData.spreadType,
+            cards: readingData.cards,
+            ai_title: readingData.aiTitle,
+            ai_overview: readingData.aiOverview,
+          }),
+        }
+      );
+
+      const patchData = await patchRes.json().catch(() => null);
+
+      // Safe Upsert Fallback: If PATCH updated 0 rows (e.g. session was not matched), insert new record!
+      if (!patchRes.ok || (Array.isArray(patchData) && patchData.length === 0)) {
+        await fetch(`${supabase.url}/rest/v1/visitors`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: supabase.key,
+            Authorization: `Bearer ${supabase.key}`,
+          },
+          body: JSON.stringify({
+            session_id: sessionId,
+            visitor_name: readingData.visitorName || "Lữ khách",
+            entered_at: completedAt,
+            completed_at: completedAt,
+            status: "completed",
+            question: readingData.question,
+            category: readingData.category,
+            spread_type: readingData.spreadType,
+            cards: readingData.cards,
+            ai_title: readingData.aiTitle,
+            ai_overview: readingData.aiOverview,
+            ip: "Ẩn danh",
+            user_agent: "Web Client",
+          }),
+        });
+      }
     } catch (e) {
-      console.error("[VisitorStore] Supabase update failed", e);
+      console.error("[VisitorStore] Supabase complete update failed", e);
     }
   }
 
@@ -194,7 +267,6 @@ export async function recordReadingComplete(
     target.aiOverview = readingData.aiOverview;
     saveLocalLogs(localLogs);
   } else {
-    // If not found, create completed record
     const newRecord: VisitorLogRecord = {
       id: `vis-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
       sessionId,
@@ -213,6 +285,39 @@ export async function recordReadingComplete(
     };
     localLogs.unshift(newRecord);
     saveLocalLogs(localLogs.slice(0, 500));
+  }
+}
+
+export async function updateVisitorAi(
+  sessionId: string,
+  data: { aiTitle?: string; aiOverview?: string }
+): Promise<void> {
+  const supabase = getSupabaseConfig();
+  if (supabase) {
+    try {
+      await fetch(`${supabase.url}/rest/v1/visitors?session_id=eq.${encodeURIComponent(sessionId)}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: supabase.key,
+          Authorization: `Bearer ${supabase.key}`,
+        },
+        body: JSON.stringify({
+          ai_title: data.aiTitle,
+          ai_overview: data.aiOverview,
+        }),
+      });
+    } catch (e) {
+      console.error("[VisitorStore] Supabase AI update failed", e);
+    }
+  }
+
+  const localLogs = loadLocalLogs();
+  const target = localLogs.find((l) => l.sessionId === sessionId);
+  if (target) {
+    if (data.aiTitle) target.aiTitle = data.aiTitle;
+    if (data.aiOverview) target.aiOverview = data.aiOverview;
+    saveLocalLogs(localLogs);
   }
 }
 

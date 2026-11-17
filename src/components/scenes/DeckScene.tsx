@@ -91,7 +91,7 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
                   {pos.nameVi.split("(")[0]}
                 </span>
                 <div
-                  className={`w-[72px] h-[116px] rounded-lg border-2 border-dashed flex items-center justify-center transition-all ${
+                  className={`w-[62px] h-[98px] sm:w-[72px] sm:h-[116px] rounded-lg border-2 border-dashed flex items-center justify-center transition-all ${
                     currentSelected
                       ? "border-[#C7E9AD] bg-[#284450]/90 shadow-celestial-glow"
                       : "border-[#DAB48A]/35 bg-[#192B38]/60"
@@ -101,7 +101,7 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
                     <TarotCard
                       card={cardData}
                       size="sm"
-                      className="w-full h-full scale-[0.55] origin-center pointer-events-none"
+                      className="w-full h-full scale-[0.48] sm:scale-[0.55] origin-center pointer-events-none"
                     />
                   ) : (
                     <span className="font-mono text-xs text-[#A7BBC0]/60">

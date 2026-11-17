@@ -76,7 +76,7 @@ function tarotReducer(state: ExperienceState, action: ExperienceAction): Experie
     case "PROCEED_TO_DECK":
       return {
         ...state,
-        readingId: `arcana-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+        readingId: state.readingId || `arcana-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
         scene: "DECK",
         shuffledDeck: action.shuffledDeck,
         selectedCards: [],
@@ -224,8 +224,26 @@ export function useTarotExperience() {
       dispatch({ type: "SET_ALLOW_REVERSED", allowReversed });
       const freshDeck = shuffleDeck();
       dispatch({ type: "PROCEED_TO_DECK", shuffledDeck: freshDeck });
+
+      // Immediate background sync: Update visitor question & category in store
+      try {
+        fetch("/api/visitors/log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "update_question",
+            sessionId: state.readingId,
+            visitorName: state.userName || "Lữ khách",
+            question,
+            category,
+            spreadType,
+          }),
+        }).catch(() => {});
+      } catch {
+        // ignore
+      }
     },
-    []
+    [state.readingId, state.userName]
   );
 
   const selectCard = useCallback(
@@ -271,6 +289,22 @@ export function useTarotExperience() {
         const json = await res.json();
         if (json.success && json.data) {
           dispatch({ type: "SET_AI_SUCCESS", result: json.data });
+
+          // Update AI interpretation into visitor log
+          try {
+            fetch("/api/visitors/log", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "update_ai",
+                sessionId: readingId,
+                aiTitle: json.data.title,
+                aiOverview: `${json.data.overview}\n\n${json.data.personalizedInterpretation}`,
+              }),
+            }).catch(() => {});
+          } catch {
+            // ignore
+          }
         } else {
           const code = json.error?.code || "UPSTREAM_ERROR";
           const status =

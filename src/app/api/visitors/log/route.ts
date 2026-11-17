@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { recordReadingComplete, recordVisitorEntry } from "@/lib/storage/visitorStore";
+import {
+  recordReadingComplete,
+  recordVisitorEntry,
+  updateVisitorAi,
+  updateVisitorQuestion,
+} from "@/lib/storage/visitorStore";
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,6 +23,23 @@ export async function POST(req: NextRequest) {
       }
       const record = await recordVisitorEntry(sessionId, visitorName, { ip, userAgent });
       return NextResponse.json({ success: true, data: record });
+    }
+
+    if (body.action === "update_question") {
+      const { sessionId, visitorName, question, category, spreadType } = body;
+      if (!sessionId) {
+        return NextResponse.json(
+          { success: false, error: "Missing sessionId" },
+          { status: 400 }
+        );
+      }
+      await updateVisitorQuestion(sessionId, {
+        visitorName,
+        question: question || "",
+        category: category || "general",
+        spreadType,
+      });
+      return NextResponse.json({ success: true });
     }
 
     if (body.action === "complete") {
@@ -40,8 +62,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
+    if (body.action === "update_ai") {
+      const { sessionId, aiTitle, aiOverview } = body;
+      if (!sessionId) {
+        return NextResponse.json(
+          { success: false, error: "Missing sessionId" },
+          { status: 400 }
+        );
+      }
+      await updateVisitorAi(sessionId, { aiTitle, aiOverview });
+      return NextResponse.json({ success: true });
+    }
+
     return NextResponse.json(
-      { success: false, error: "Invalid action. Expected 'enter' or 'complete'." },
+      { success: false, error: "Invalid action." },
       { status: 400 }
     );
   } catch (error: any) {

@@ -13,11 +13,12 @@ export interface TarotCardProps {
   isSelected?: boolean;
   onClick?: () => void;
   className?: string;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   layoutId?: string;
 }
 
 const SIZE_CLASSES = {
+  xs: "w-[86px] h-[144px]", // Mobile curved fan
   sm: "w-[125px] h-[208px]", // Card fan & compact displays
   md: "w-[175px] h-[290px]", // Three-card spread visual anchor
   lg: "w-[240px] h-[395px]", // Card reveal feature (20-35% larger)

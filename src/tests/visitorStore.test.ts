@@ -2,6 +2,8 @@ import { describe, it, expect } from "vitest";
 import {
   recordVisitorEntry,
   recordReadingComplete,
+  updateVisitorQuestion,
+  updateVisitorAi,
   getVisitorLogs,
   computeAdminStats,
 } from "@/lib/storage/visitorStore";
@@ -53,6 +55,31 @@ describe("Visitor Store & Analytics Tests", () => {
     expect(updated?.question).toBe("Tương lai công việc sắp tới thế nào?");
     expect(updated?.category).toBe("career");
     expect(updated?.cards?.length).toBe(1);
+  });
+
+  it("updates visitor question and AI overview independently", async () => {
+    const sessionId = `test-update-${Date.now()}`;
+    await recordVisitorEntry(sessionId, "Thanh Hằng");
+
+    await updateVisitorQuestion(sessionId, {
+      question: "Chuyện tình cảm có tiến triển không?",
+      category: "love",
+    });
+
+    let { logs } = await getVisitorLogs();
+    let target = logs.find((l) => l.sessionId === sessionId);
+    expect(target?.question).toBe("Chuyện tình cảm có tiến triển không?");
+    expect(target?.category).toBe("love");
+
+    await updateVisitorAi(sessionId, {
+      aiTitle: "Tình Duyên Khai Hoa",
+      aiOverview: "Trái tim bạn đã sẵn sàng mở lối.",
+    });
+
+    logs = (await getVisitorLogs()).logs;
+    target = logs.find((l) => l.sessionId === sessionId);
+    expect(target?.aiTitle).toBe("Tình Duyên Khai Hoa");
+    expect(target?.aiOverview).toBe("Trái tim bạn đã sẵn sàng mở lối.");
   });
 
   it("correctly computes admin stats", () => {

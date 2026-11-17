@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CardSpread } from "@/components/tarot/CardSpread";
 import { RulebaseReading } from "@/components/reading/RulebaseReading";
 import { AIReading } from "@/components/reading/AIReading";
 import { ReadingActions } from "@/components/reading/ReadingActions";
+import { ReadingCarousel } from "@/components/reading/ReadingCarousel";
+import { CelestialLoadingTransition } from "@/components/reading/CelestialLoadingTransition";
 import { HistoryModal } from "@/components/reading/HistoryModal";
 import { historyStorage } from "@/lib/storage/history";
 import { PopulatedCard, QuestionCategory, RulebaseInterpretation, SelectedCard, SpreadType } from "@/types/tarot";
 import { AIInterpretationResult, AIStatus, ReadingSessionRecord } from "@/types/reading";
 import { getCardById } from "@/data/tarot/cards";
 import { getSpreadDef } from "@/data/tarot/spreads";
-import { Sparkles, Compass } from "lucide-react";
+import { Sparkles, Compass, Layers, LayoutGrid } from "lucide-react";
 import { getCategoryLabelVi } from "@/data/tarot/categories";
 import { copyTextToClipboard } from "@/lib/utils/clipboard";
 
@@ -51,6 +53,17 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Loading wait state for AI first
+  const [isWaitingForAi, setIsWaitingForAi] = useState<boolean>(aiStatus === "loading");
+  // Default to compact Swipeable Carousel to prevent excessive scrolling
+  const [viewMode, setViewMode] = useState<"carousel" | "classic">("carousel");
+
+  useEffect(() => {
+    if (aiStatus !== "loading") {
+      setIsWaitingForAi(false);
+    }
+  }, [aiStatus]);
 
   const spreadDef = getSpreadDef(spreadType);
 
@@ -137,8 +150,20 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
     });
   };
 
+  // 1. Celestial Loading State (AI First)
+  if (isWaitingForAi && aiStatus === "loading") {
+    return (
+      <CelestialLoadingTransition
+        userName={userName}
+        question={question}
+        onSkip={() => setIsWaitingForAi(false)}
+      />
+    );
+  }
+
+  // 2. Reading Stage
   return (
-    <div className="relative w-full max-w-6xl mx-auto px-4 py-8 select-none">
+    <div className="relative w-full max-w-6xl mx-auto px-2 sm:px-4 py-4 sm:py-6 select-none">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-6 right-6 z-50 px-4 py-2.5 rounded-xl bg-[#284450] border border-[#C7E9AD] text-[#C7E9AD] font-body text-xs font-semibold shadow-celestial-glow animate-fade-in flex items-center space-x-2">
@@ -147,72 +172,115 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
         </div>
       )}
 
-      {/* Top Reading Header */}
-      <div className="text-center mb-6 space-y-2">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#284450]/80 border border-[#DAB48A]/40 backdrop-blur-md shadow-sm">
-          <Compass className="w-3.5 h-3.5 text-[#C7E9AD]" />
-          <span className="font-body text-xs text-[#F4EADA] font-semibold tracking-wide">
-            The Revelation • Kết quả Khai Mở
-          </span>
-        </div>
-        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-[#F4EADA] font-light tracking-wide max-w-2xl mx-auto leading-relaxed">
-          "{question || "Thông điệp vũ trụ cho hiện tại"}"
-        </h2>
-        <div className="flex justify-center items-center space-x-3 text-xs font-body text-[#C1CFD0]">
-          {userName && (
+      {/* View Mode Switcher Pill */}
+      <div className="w-full flex justify-end mb-2 px-2">
+        <button
+          onClick={() => setViewMode(viewMode === "carousel" ? "classic" : "carousel")}
+          className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#111E2C] border border-[#DAB48A]/30 text-[11px] font-mono text-[#A7BBC0] hover:text-[#F4EADA] transition-colors cursor-pointer"
+        >
+          {viewMode === "carousel" ? (
             <>
-              <span className="text-[#C7E9AD] font-medium">Lữ khách: {userName}</span>
-              <span>•</span>
+              <Layers className="w-3.5 h-3.5 text-[#DAB48A]" />
+              <span>Xem dạng cuộn cổ điển</span>
+            </>
+          ) : (
+            <>
+              <LayoutGrid className="w-3.5 h-3.5 text-[#C7E9AD]" />
+              <span>Xem dạng Thẻ thiên thể (Carousel)</span>
             </>
           )}
-          <span className="font-semibold uppercase tracking-wider text-[#DAB48A]">
-            LĨNH VỰC: {getCategoryLabelVi(category).toUpperCase()}
-          </span>
-          <span>•</span>
-          <span>{spreadDef.nameVi.split("—")[0]}</span>
-        </div>
+        </button>
       </div>
 
-      {/* Prominent Visual Anchor: The Selected Cards Spread with Authentic Artwork */}
-      <div className="mb-10">
-        <CardSpread
+      {/* VIEW 1: SWIPEABLE CAROUSEL (Default, Clean, No Long Scroll) */}
+      {viewMode === "carousel" ? (
+        <ReadingCarousel
+          readingId={readingId}
+          userName={userName}
+          question={question}
+          category={category}
           spreadType={spreadType}
-          cards={populatedCards}
-          revealedIndices={[0, 1, 2]}
-          size="md"
-        />
-      </div>
-
-      {/* Dual Reading Layout: Left = Authentic Parchment Rulebase, Right = Elevated Teal AI */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
-        {/* Section A: Ancient Wisdom (Parchment Treatment: #F4ECDD, #253C44 text) */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-[#F4ECDD] border border-[#D8C8B3] shadow-parchment">
-          <RulebaseReading interpretation={rulebaseResult} userName={userName} />
-        </div>
-
-        {/* Section B: Living Interpretation (Elevated Teal Treatment: #284450) */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-[#284450] border border-[#80BDB2]/40 shadow-xl">
-          <AIReading
-            aiStatus={aiStatus}
-            aiResult={aiResult}
-            aiError={aiError}
-            onRetry={onRetryAI}
-            userQuestion={question}
-            userName={userName}
-          />
-        </div>
-      </div>
-
-      {/* Bottom Action Controls */}
-      <div className="mt-10">
-        <ReadingActions
+          populatedCards={populatedCards}
+          rulebaseResult={rulebaseResult}
+          aiStatus={aiStatus}
+          aiResult={aiResult}
+          onRetryAI={onRetryAI}
           onSave={handleSave}
           onCopy={handleCopy}
           onRestart={onRestart}
-          onOpenHistory={() => setIsHistoryOpen(true)}
           isSaved={isSaved}
         />
-      </div>
+      ) : (
+        /* VIEW 2: CLASSIC TWO-COLUMN SCROLL (For detailed research) */
+        <div className="space-y-8 animate-fade-in">
+          {/* Top Reading Header */}
+          <div className="text-center mb-6 space-y-2">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#284450]/80 border border-[#DAB48A]/40 backdrop-blur-md shadow-sm">
+              <Compass className="w-3.5 h-3.5 text-[#C7E9AD]" />
+              <span className="font-body text-xs text-[#F4EADA] font-semibold tracking-wide">
+                The Revelation • Kết quả Khai Mở
+              </span>
+            </div>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-[#F4EADA] font-light tracking-wide max-w-2xl mx-auto leading-relaxed">
+              &ldquo;{question || "Thông điệp vũ trụ cho hiện tại"}&rdquo;
+            </h2>
+            <div className="flex justify-center items-center space-x-3 text-xs font-body text-[#C1CFD0]">
+              {userName && (
+                <>
+                  <span className="text-[#C7E9AD] font-medium">Lữ khách: {userName}</span>
+                  <span>•</span>
+                </>
+              )}
+              <span className="font-semibold uppercase tracking-wider text-[#DAB48A]">
+                LĨNH VỰC: {getCategoryLabelVi(category).toUpperCase()}
+              </span>
+              <span>•</span>
+              <span>{spreadDef.nameVi.split("—")[0]}</span>
+            </div>
+          </div>
+
+          {/* Card Spread Anchor */}
+          <div className="mb-8">
+            <CardSpread
+              spreadType={spreadType}
+              cards={populatedCards}
+              revealedIndices={[0, 1, 2]}
+              size="md"
+            />
+          </div>
+
+          {/* Dual Reading Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
+            {/* Section A: Ancient Wisdom */}
+            <div className="p-6 sm:p-8 rounded-2xl bg-[#F4ECDD] border border-[#D8C8B3] shadow-parchment">
+              <RulebaseReading interpretation={rulebaseResult} userName={userName} />
+            </div>
+
+            {/* Section B: Living AI */}
+            <div className="p-6 sm:p-8 rounded-2xl bg-[#284450] border border-[#80BDB2]/40 shadow-xl">
+              <AIReading
+                aiStatus={aiStatus}
+                aiResult={aiResult}
+                aiError={aiError}
+                onRetry={onRetryAI}
+                userQuestion={question}
+                userName={userName}
+              />
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="mt-8">
+            <ReadingActions
+              onSave={handleSave}
+              onCopy={handleCopy}
+              onRestart={onRestart}
+              onOpenHistory={() => setIsHistoryOpen(true)}
+              isSaved={isSaved}
+            />
+          </div>
+        </div>
+      )}
 
       {/* History Modal Drawer */}
       <HistoryModal

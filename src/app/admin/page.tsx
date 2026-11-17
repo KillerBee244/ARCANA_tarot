@@ -538,16 +538,22 @@ export default function AdminDashboardPage() {
 
                         {/* Status */}
                         <td className="px-4 py-3.5 whitespace-nowrap">
-                          <span
-                            className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider ${
-                              isCompleted
-                                ? "bg-[#1E3B34] text-[#C7E9AD] border border-[#80BDB2]/40"
-                                : "bg-[#382C1D] text-[#DAB48A] border border-[#DAB48A]/30"
-                            }`}
-                          >
-                            <span className={`w-1.5 h-1.5 rounded-full ${isCompleted ? "bg-[#C7E9AD]" : "bg-[#DAB48A]"}`} />
-                            <span>{isCompleted ? "Đã Khai Mở" : "Vào Cổng"}</span>
-                          </span>
+                          {isCompleted ? (
+                            <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider bg-[#1E3B34] text-[#C7E9AD] border border-[#80BDB2]/40">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#C7E9AD]" />
+                              <span>Đã Khai Mở</span>
+                            </span>
+                          ) : log.question ? (
+                            <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider bg-[#223846] text-[#80BDB2] border border-[#80BDB2]/40">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#80BDB2] animate-pulse" />
+                              <span>Đang Chọn Bài</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider bg-[#382C1D] text-[#DAB48A] border border-[#DAB48A]/30">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#DAB48A]" />
+                              <span>Vào Cổng</span>
+                            </span>
+                          )}
                         </td>
 
                         {/* Category & Question */}
