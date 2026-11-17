@@ -152,13 +152,14 @@ export const PortalScene: React.FC<PortalSceneProps> = ({ onEnter, onOpenHistory
       </motion.div>
 
       {/* Atmospheric Bottom Microcopy */}
-      <div className="w-full max-w-5xl px-6 py-4 flex justify-between items-center text-[#A7BBC0]/70 font-mono text-[10px] z-10 border-t border-[#DAB48A]/15 mt-auto">
-        <span>ARCHIVE-V2.0 • 78 RIDER-WAITE-SMITH CARDS</span>
+      <div className="w-full max-w-5xl px-6 py-4 flex justify-between items-center text-[#A7BBC0]/80 font-mono text-[10px] z-10 border-t border-[#DAB48A]/15 mt-auto">
+        <span className="hidden sm:inline">ARCHIVE-V2.0 • 78 RIDER-WAITE-SMITH CARDS</span>
+        <span className="sm:hidden">ARCHIVE V2.0</span>
         <button
           onClick={onEnter}
-          className="hover:text-[#F4EADA] transition-colors cursor-pointer"
+          className="hover:text-[#F4EADA] transition-colors cursor-pointer text-right"
         >
-          Bỏ qua phần giới thiệu →
+          Bỏ qua giới thiệu →
         </button>
       </div>
     </div>

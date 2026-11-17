@@ -67,7 +67,7 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
           y: isSubmitting ? -16 : 0,
         }}
         transition={{ duration: 0.35 }}
-        className="relative w-full max-w-2xl bg-[#223846]/95 border border-[#DAB48A]/40 rounded-2xl p-6 sm:p-8 md:p-10 shadow-2xl backdrop-blur-md"
+        className="relative w-full max-w-2xl bg-[#223846]/95 border border-[#DAB48A]/40 rounded-2xl p-5 sm:p-7 md:p-9 shadow-2xl backdrop-blur-md"
       >
         {/* Subtle Top Badge */}
         <div className="flex justify-center mb-4">
@@ -95,9 +95,10 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
               Lĩnh vực câu hỏi:
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-              {CATEGORIES.map((cat) => {
+              {CATEGORIES.map((cat, idx) => {
                 const Icon = cat.icon;
                 const isSelected = category === cat.id;
+                const isLastOdd = idx === 4;
 
                 return (
                   <button
@@ -105,6 +106,8 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
                     type="button"
                     onClick={() => setCategory(cat.id)}
                     className={`flex flex-col items-center justify-center p-3 rounded-xl border text-xs font-body transition-all cursor-pointer ${
+                      isLastOdd ? "col-span-2 sm:col-span-1" : ""
+                    } ${
                       isSelected
                         ? "bg-[#284450] border-[#C7E9AD] text-[#C7E9AD] shadow-celestial-glow font-semibold"
                         : "bg-[#192B38]/80 border-[#45616B]/60 text-[#C1CFD0] hover:border-[#DAB48A]/70 hover:text-[#F4EADA]"

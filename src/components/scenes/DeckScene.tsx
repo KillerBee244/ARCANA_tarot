@@ -8,6 +8,7 @@ import { getCardById } from "@/data/tarot/cards";
 import { getSpreadDef } from "@/data/tarot/spreads";
 import { QuestionCategory, SelectedCard, SpreadType } from "@/types/tarot";
 import { ArrowLeft, Sparkles, Wand2 } from "lucide-react";
+import { getCategoryLabelVi } from "@/data/tarot/categories";
 
 interface DeckSceneProps {
   shuffledDeck: string[];
@@ -50,7 +51,7 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
 
         <div className="flex items-center space-x-2">
           <span className="font-body text-xs uppercase px-2.5 py-0.5 rounded-full bg-[#284450] border border-[#DAB48A]/40 text-[#DAB48A] font-medium">
-            {category}
+            {getCategoryLabelVi(category)}
           </span>
           <span className="font-body text-xs uppercase px-2.5 py-0.5 rounded-full bg-[#284450] border border-[#C7E9AD]/40 text-[#C7E9AD] font-medium">
             {spreadDef.nameVi.split("—")[0]}

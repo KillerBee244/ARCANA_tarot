@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ReadingSessionRecord } from "@/types/reading";
 import { historyStorage } from "@/lib/storage/history";
+import { getCardById } from "@/data/tarot/cards";
+import { getCategoryLabelVi, getCleanViCardName } from "@/data/tarot/categories";
 import { X, Clock, Trash2, ArrowUpRight, Archive } from "lucide-react";
 
 interface HistoryModalProps {
@@ -97,7 +99,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
                     <div className="space-y-1.5">
                       <div className="flex items-center space-x-2">
                         <span className="font-body text-[10px] px-2 py-0.5 rounded-full bg-[#284450] text-[#C7E9AD] border border-[#C7E9AD]/30 uppercase font-semibold">
-                          {rec.category}
+                          {getCategoryLabelVi(rec.category)}
                         </span>
                         <span className="font-mono text-xs text-[#A7BBC0]">
                           {formattedDate}
@@ -108,7 +110,13 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
                       </h4>
                       <p className="font-body text-xs text-[#C1CFD0]">
                         {rec.spreadType === "single" ? "Trải 1 lá" : "Trải 3 lá"}:{" "}
-                        {rec.selectedCards.map((c) => c.cardId).join(", ")}
+                        {rec.selectedCards
+                          .map((c) => {
+                            const card = getCardById(c.cardId);
+                            const name = card ? getCleanViCardName(card.nameVi) : c.cardId;
+                            return `${name} (${c.orientation === "upright" ? "Thuận" : "Ngược"})`;
+                          })
+                          .join(" • ")}
                       </p>
                     </div>
 

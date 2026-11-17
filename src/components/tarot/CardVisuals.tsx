@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { TarotCardData } from "@/types/tarot";
 import { getCardArtworkUrl } from "@/data/tarot/assets";
+import { getCleanViCardName } from "@/data/tarot/categories";
 
 interface CardBackProps {
   className?: string;
@@ -181,7 +182,7 @@ export const CardFace: React.FC<CardFaceProps> = ({ card, isReversed = false, cl
       <div className="border-t border-[#DAB48A]/25 pt-1 px-0.5 flex flex-col z-10 bg-[#111E2C]/70 rounded-b-lg">
         <div className="text-center">
           <h4 className="font-display text-sm font-semibold tracking-wide text-[#F4EADA] leading-snug line-clamp-1">
-            {card.nameVi.replace(/\s*\(.*\)/, "")}
+            {getCleanViCardName(card.nameVi)}
           </h4>
           <p className="font-body text-[10px] text-[#C1CFD0] leading-none mt-0.5">
             {card.nameEn}

@@ -47,11 +47,11 @@ export const CardSpread: React.FC<CardSpreadProps> = ({
               }}
             >
               {/* Position Header Tag */}
-              <div className="mb-3 text-center">
+              <div className="mb-3.5 text-center px-2">
                 <span className="font-body text-xs font-semibold tracking-wide px-3.5 py-1 rounded-full bg-[#284450]/90 border border-[#DAB48A]/40 text-[#C7E9AD] shadow-sm inline-block">
                   {item.position.nameVi}
                 </span>
-                <p className="font-body text-xs text-[#A7BBC0] mt-1 max-w-[200px] line-clamp-1">
+                <p className="font-body text-[11px] text-[#C1CFD0] mt-1.5 max-w-[220px] leading-tight mx-auto">
                   {item.position.descriptionVi}
                 </p>
               </div>

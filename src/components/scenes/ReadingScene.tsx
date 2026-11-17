@@ -12,6 +12,7 @@ import { AIInterpretationResult, AIStatus, ReadingSessionRecord } from "@/types/
 import { getCardById } from "@/data/tarot/cards";
 import { getSpreadDef } from "@/data/tarot/spreads";
 import { Sparkles, Compass } from "lucide-react";
+import { getCategoryLabelVi } from "@/data/tarot/categories";
 
 interface ReadingSceneProps {
   readingId: string;
@@ -98,7 +99,7 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
     const lines = [
       `=== ARCANA: THE ARCHIVE OF POSSIBILITIES ===`,
       `Câu hỏi: "${question || "Trải bài tổng quát"}"`,
-      `Lĩnh vực: ${category.toUpperCase()} | Kiểu trải bài: ${spreadDef.nameVi}`,
+      `Lĩnh vực: ${getCategoryLabelVi(category)} | Kiểu trải bài: ${spreadDef.nameVi}`,
       ``,
       `--- CÁC LÁ BÀI ĐÃ RÚT ---`,
       ...populatedCards.map(
@@ -149,7 +150,7 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
         </h2>
         <div className="flex justify-center items-center space-x-3 text-xs font-body text-[#C1CFD0]">
           <span className="font-semibold uppercase tracking-wider text-[#DAB48A]">
-            LĨNH VỰC: {category.toUpperCase()}
+            LĨNH VỰC: {getCategoryLabelVi(category).toUpperCase()}
           </span>
           <span>•</span>
           <span>{spreadDef.nameVi.split("—")[0]}</span>

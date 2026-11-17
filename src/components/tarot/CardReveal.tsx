@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { TarotCard } from "./TarotCard";
 import { PopulatedCard } from "@/types/tarot";
 import { Sparkles, ArrowRight, FastForward } from "lucide-react";
+import { getCleanViCardName } from "@/data/tarot/categories";
 
 interface CardRevealProps {
   cards: PopulatedCard[];
@@ -106,27 +107,31 @@ export const CardReveal: React.FC<CardRevealProps> = ({ cards, onComplete }) => 
           </motion.div>
         </AnimatePresence>
 
-        {/* 3 & 4. Card Name, Orientation & Short Interpretation */}
+        {/* 3 & 4. Card Name, Orientation & Short Interpretation (High Contrast Card) */}
         <AnimatePresence>
           {isCurrentRevealed && (
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, duration: 0.5 }}
+              transition={{ delay: 0.08, duration: 0.35 }}
               className="text-center mt-5 max-w-lg px-4"
             >
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#284450] border border-[#DAB48A]/40 text-[#F4EADA] font-body text-xs font-semibold mb-2">
-                <span>{currentCard.card.nameVi}</span>
-                <span className="text-[#A7BBC0]">•</span>
-                <span className={currentCard.orientation === "upright" ? "text-[#C7E9AD]" : "text-amber-300"}>
+              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#192B38] border border-[#DAB48A]/50 text-[#F4EADA] font-body text-xs font-semibold mb-2.5 shadow-md">
+                <span className="text-[#F4EADA]">
+                  {getCleanViCardName(currentCard.card.nameVi)}
+                </span>
+                <span className="text-[#DAB48A]">•</span>
+                <span className={currentCard.orientation === "upright" ? "text-[#C7E9AD]" : "text-amber-300 font-medium"}>
                   {currentCard.orientation === "upright" ? "Vị trí Thuận" : "Vị trí Ngược"}
                 </span>
               </div>
-              <p className="font-body text-sm text-[#F4EADA]/90 leading-relaxed">
-                {currentCard.orientation === "upright"
-                  ? currentCard.card.uprightMeaning
-                  : currentCard.card.reversedMeaning}
-              </p>
+              <div className="p-4 rounded-xl bg-[#192B38]/85 border border-[#DAB48A]/25 backdrop-blur-md shadow-card-3d">
+                <p className="font-body text-sm sm:text-base text-[#F4EADA] leading-relaxed drop-shadow-sm font-normal">
+                  {currentCard.orientation === "upright"
+                    ? currentCard.card.uprightMeaning
+                    : currentCard.card.reversedMeaning}
+                </p>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

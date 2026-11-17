@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { RulebaseInterpretation } from "@/types/tarot";
 import { BookOpen, Compass, ChevronDown, ChevronUp, Sparkles, ShieldCheck } from "lucide-react";
+import { getCategoryLabelVi } from "@/data/tarot/categories";
 
 interface RulebaseReadingProps {
   interpretation: RulebaseInterpretation;
@@ -156,7 +157,7 @@ export const RulebaseReading: React.FC<RulebaseReadingProps> = ({ interpretation
                       {/* Contextual Category Meaning */}
                       <div>
                         <span className="font-body text-xs font-bold text-[#B58C60] uppercase tracking-wider block mb-1">
-                          Góc nhìn lĩnh vực ({interpretation.category.toUpperCase()}):
+                          Góc nhìn lĩnh vực ({getCategoryLabelVi(interpretation.category)}):
                         </span>
                         <p className="font-body text-sm text-[#52636A] leading-relaxed">
                           {item.categoryMeaning}

@@ -181,7 +181,7 @@ export const AIReading: React.FC<AIReadingProps> = ({
         aiStatus === "error" ||
         aiStatus === "rate_limited" ||
         aiStatus === "timeout") && (
-        <div className="p-5 sm:p-6 rounded-xl bg-[#192B38]/70 border border-[#DAB48A]/35 flex flex-col space-y-3.5">
+        <div className="p-5 sm:p-6 rounded-xl bg-[#192B38]/70 border border-[#DAB48A]/35 flex flex-col space-y-4">
           <div className="flex items-start space-x-3.5">
             <AlertCircle className="w-5 h-5 text-[#DAB48A] flex-shrink-0 mt-0.5" />
             <div className="space-y-1.5">
@@ -195,7 +195,7 @@ export const AIReading: React.FC<AIReadingProps> = ({
                   : "Dịch vụ AI tạm gián đoạn"}
               </h5>
               <p className="font-body text-sm text-[#C1CFD0] leading-relaxed">
-                Phần diễn giải AI hiện chưa khả dụng. Bạn vẫn có thể khám phá đầy đủ thông điệp từ bộ bài Tarot truyền thống.
+                Phần diễn giải AI hiện chưa khả dụng. Bạn vẫn có thể khám phá đầy đủ thông điệp từ bộ bài Tarot truyền thống bên cạnh.
               </p>
               {aiError && (
                 <p className="font-mono text-xs text-[#A7BBC0] pt-1">
@@ -222,6 +222,23 @@ export const AIReading: React.FC<AIReadingProps> = ({
               </button>
             </div>
           )}
+
+          {/* Informative Guidance Card for Architectural Balance */}
+          <div className="p-4 rounded-xl bg-[#111E2C]/60 border border-[#45616B]/40 space-y-2.5 mt-2">
+            <div className="flex items-center space-x-2">
+              <Sparkles className="w-4 h-4 text-[#C7E9AD]" />
+              <span className="font-display text-sm text-[#F4EADA] font-medium">
+                Về Tầng Trí Tuệ Nhân Tạo ARCANA
+              </span>
+            </div>
+            <p className="font-body text-xs text-[#C1CFD0] leading-relaxed">
+              Khi được kết nối qua <code className="text-[#C7E9AD] bg-[#284450] px-1 py-0.5 rounded">GEMINI_API_KEY</code>, mô hình Gemini sẽ phân tích tương quan giữa các lá bài đã rút, kiến tạo một bức tranh trực giác liền mạch và đưa ra các câu hỏi phản chiếu nội tâm sâu sắc.
+            </p>
+            <div className="pt-1.5 border-t border-[#45616B]/30 flex flex-wrap gap-2 text-[10px] font-mono text-[#DAB48A]">
+              <span>• Tương thích Gemini 2.5 Flash</span>
+              <span>• Fallback tự động 100%</span>
+            </div>
+          </div>
         </div>
       )}
     </div>
