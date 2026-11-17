@@ -78,3 +78,4 @@ class LocalStorageAdapter implements StorageAdapter {
 }
 
 export const historyStorage: StorageAdapter = new LocalStorageAdapter();
+

@@ -422,3 +422,4 @@ export const WANDS_CARDS: TarotCardData[] = [
     }
   }
 ];
+

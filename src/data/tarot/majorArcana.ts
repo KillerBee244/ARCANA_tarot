@@ -662,3 +662,4 @@ export const MAJOR_ARCANA: TarotCardData[] = [
     }
   }
 ];
+

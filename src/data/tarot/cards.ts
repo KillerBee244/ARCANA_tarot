@@ -34,3 +34,4 @@ export const TAROT_CARDS_MAP = new Map<string, TarotCardData>(
 export function getCardById(id: string): TarotCardData | undefined {
   return TAROT_CARDS_MAP.get(id);
 }
+

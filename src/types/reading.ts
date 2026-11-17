@@ -59,3 +59,4 @@ export interface InterpretApiResponse {
     details?: string;
   };
 }
+

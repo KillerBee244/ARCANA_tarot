@@ -11,7 +11,7 @@ import { ReadingSessionRecord } from "@/types/reading";
 function createInitialState(): ExperienceState {
   return {
     scene: "PORTAL",
-    readingId: `arcana-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    readingId: "arcana-session-initial",
     question: "",
     category: "general",
     spreadType: "three_card",
@@ -58,6 +58,7 @@ function tarotReducer(state: ExperienceState, action: ExperienceAction): Experie
     case "PROCEED_TO_DECK":
       return {
         ...state,
+        readingId: `arcana-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
         scene: "DECK",
         shuffledDeck: action.shuffledDeck,
         selectedCards: [],
@@ -309,3 +310,4 @@ export function useTarotExperience() {
     navigateScene,
   };
 }
+

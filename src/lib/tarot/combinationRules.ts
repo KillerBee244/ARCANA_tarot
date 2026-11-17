@@ -149,3 +149,4 @@ export function analyzeCombinations(cards: PopulatedCard[]): CombinationRuleResu
 
   return rules;
 }
+

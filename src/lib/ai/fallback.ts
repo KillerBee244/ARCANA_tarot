@@ -60,3 +60,4 @@ export function generateMockAiResponse(
       "Tương lai không phải là định mệnh bất biến, mà là bức tranh do chính những lựa chọn có ý thức của bạn kiến tạo mỗi ngày.",
   };
 }
+

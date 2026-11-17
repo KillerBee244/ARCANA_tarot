@@ -422,3 +422,4 @@ export const CUPS_CARDS: TarotCardData[] = [
     }
   }
 ];
+

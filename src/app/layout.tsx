@@ -38,10 +38,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className={`${cormorant.variable} ${vietnam.variable} ${spaceMono.variable}`}>
-      <body className="bg-[#0B1020] text-[#E9DFC9] font-body antialiased min-h-screen overflow-x-hidden selection:bg-[#C6F68D] selection:text-[#0B1020]">
+    <html
+      lang="vi"
+      suppressHydrationWarning
+      className={`${cormorant.variable} ${vietnam.variable} ${spaceMono.variable}`}
+    >
+      <body
+        suppressHydrationWarning
+        className="bg-[#0B1020] text-[#E9DFC9] font-body antialiased min-h-screen overflow-x-hidden selection:bg-[#C6F68D] selection:text-[#0B1020]"
+      >
         {children}
       </body>
     </html>
   );
 }
+

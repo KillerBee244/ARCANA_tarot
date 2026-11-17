@@ -158,3 +158,4 @@ export const PortalScene: React.FC<PortalSceneProps> = ({ onEnter, onOpenHistory
     </div>
   );
 };
+

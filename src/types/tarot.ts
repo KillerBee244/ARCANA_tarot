@@ -104,3 +104,4 @@ export interface RulebaseInterpretation {
   reflectionQuestions: string[];
   rulebookVersion: string;
 }
+

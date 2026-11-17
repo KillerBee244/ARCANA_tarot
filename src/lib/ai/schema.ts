@@ -30,3 +30,4 @@ export const AIStructuredOutputSchema = z.object({
 });
 
 export type AIStructuredOutput = z.infer<typeof AIStructuredOutputSchema>;
+

@@ -52,3 +52,4 @@ export const TAROT_SPREADS: Record<SpreadType, TarotSpreadDef> = {
 export function getSpreadDef(type: SpreadType): TarotSpreadDef {
   return TAROT_SPREADS[type] || TAROT_SPREADS.three_card;
 }
+

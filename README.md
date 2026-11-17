@@ -179,3 +179,4 @@ src/
 ## 7. TUYÊN BỐ MIỄN TRỪ TRÁCH NHIỆM
 
 Tarot trong ARCANA là một công cụ biểu tượng dành cho sự suy ngẫm nội tâm, đối thoại triết học và khám phá bản thân. ARCANA không đưa ra các tuyên bố dự đoán tương lai mang tính áp đặt hoặc thay thế cho các quyết định y tế, pháp lý và tài chính chuyên nghiệp.
+

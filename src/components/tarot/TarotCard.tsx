@@ -110,3 +110,4 @@ export const TarotCard: React.FC<TarotCardProps> = ({
     </motion.div>
   );
 };
+

@@ -492,3 +492,4 @@ function renderMinorIllustration(card: TarotCardData, accentColor: string) {
       );
   }
 }
+

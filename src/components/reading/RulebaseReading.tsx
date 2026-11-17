@@ -204,3 +204,4 @@ export const RulebaseReading: React.FC<RulebaseReadingProps> = ({ interpretation
     </div>
   );
 };
+

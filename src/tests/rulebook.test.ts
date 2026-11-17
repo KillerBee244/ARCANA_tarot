@@ -120,3 +120,4 @@ describe("Deterministic Rulebase Engine", () => {
     expect(hasCupsDominance).toBe(true);
   });
 });
+

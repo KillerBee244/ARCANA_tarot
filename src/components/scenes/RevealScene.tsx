@@ -45,3 +45,4 @@ export const RevealScene: React.FC<RevealSceneProps> = ({
     </div>
   );
 };
+
