@@ -26,7 +26,7 @@ export const CardSpread: React.FC<CardSpreadProps> = ({
     <div className={`w-full flex flex-col items-center justify-center ${className}`}>
       {/* Spread Cards Grid */}
       <div
-        className={`w-full flex flex-wrap items-center justify-center gap-6 md:gap-8 lg:gap-12 py-4 ${
+        className={`w-full flex flex-wrap items-center justify-center gap-6 md:gap-8 lg:gap-10 py-2 ${
           spreadType === "single" ? "max-w-md" : "max-w-5xl"
         }`}
       >
@@ -48,10 +48,10 @@ export const CardSpread: React.FC<CardSpreadProps> = ({
             >
               {/* Position Header Tag */}
               <div className="mb-3 text-center">
-                <span className="font-mono text-[11px] tracking-wider uppercase px-3 py-1 rounded-full bg-[#172B38]/90 border border-[#DAA87B]/40 text-[#C6F68D] shadow-sm">
+                <span className="font-body text-xs font-semibold tracking-wide px-3.5 py-1 rounded-full bg-[#284450]/90 border border-[#DAB48A]/40 text-[#C7E9AD] shadow-sm inline-block">
                   {item.position.nameVi}
                 </span>
-                <p className="font-body text-[11px] text-[#B5AA94] mt-1 max-w-[180px] line-clamp-1">
+                <p className="font-body text-xs text-[#A7BBC0] mt-1 max-w-[200px] line-clamp-1">
                   {item.position.descriptionVi}
                 </p>
               </div>
@@ -72,4 +72,3 @@ export const CardSpread: React.FC<CardSpreadProps> = ({
     </div>
   );
 };
-

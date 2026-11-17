@@ -18,10 +18,10 @@ export interface TarotCardProps {
 }
 
 const SIZE_CLASSES = {
-  sm: "w-[120px] h-[192px]", // 5:8 ratio
-  md: "w-[160px] h-[256px]",
-  lg: "w-[200px] h-[320px]",
-  xl: "w-[240px] h-[384px]",
+  sm: "w-[125px] h-[208px]", // Card fan & compact displays
+  md: "w-[175px] h-[290px]", // Three-card spread visual anchor
+  lg: "w-[240px] h-[395px]", // Card reveal feature (20-35% larger)
+  xl: "w-[280px] h-[460px]", // Detail inspection
 };
 
 export const TarotCard: React.FC<TarotCardProps> = ({
@@ -78,8 +78,12 @@ export const TarotCard: React.FC<TarotCardProps> = ({
       >
         {/* CARD BACK (0deg) */}
         <div
-          className={`absolute inset-0 w-full h-full rounded-xl transition-shadow duration-300 ${
-            isSelected ? "ring-2 ring-[#C6F68D] shadow-celestial-glow" : ""
+          className={`absolute inset-0 w-full h-full rounded-xl transition-all duration-300 ${
+            isSelected
+              ? "ring-2 ring-[#C7E9AD] shadow-celestial-glow"
+              : isHoverable
+              ? "hover:ring-1 hover:ring-[#DAB48A] hover:shadow-card-hover"
+              : ""
           }`}
           style={{
             backfaceVisibility: "hidden",
@@ -91,13 +95,15 @@ export const TarotCard: React.FC<TarotCardProps> = ({
 
         {/* CARD FACE (180deg) */}
         <div
-          className={`absolute inset-0 w-full h-full rounded-xl transition-shadow duration-300 ${
-            isSelected ? "ring-2 ring-[#C6F68D] shadow-celestial-glow" : ""
+          className={`absolute inset-0 w-full h-full rounded-xl transition-all duration-300 ${
+            isSelected
+              ? "ring-2 ring-[#C7E9AD] shadow-celestial-glow"
+              : ""
           }`}
           style={{
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
-            transform: `rotateY(180deg) ${isReversed ? "rotateZ(180deg)" : ""}`,
+            transform: "rotateY(180deg)",
           }}
         >
           {card ? (
@@ -110,4 +116,3 @@ export const TarotCard: React.FC<TarotCardProps> = ({
     </motion.div>
   );
 };
-

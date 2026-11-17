@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { QuestionCategory, SpreadType } from "@/types/tarot";
 import { Heart, Briefcase, DollarSign, User, HelpCircle, ArrowRight, Sparkles, Layers, Sliders } from "lucide-react";
 
@@ -51,7 +51,7 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
         spreadType,
         allowReversed,
       });
-    }, 400);
+    }, 350);
   };
 
   const handleUseExample = (exampleText: string) => {
@@ -59,37 +59,39 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
   };
 
   return (
-    <div className="relative min-h-[85vh] w-full flex items-center justify-center px-4 py-8 select-none">
+    <div className="relative min-h-[88vh] w-full flex items-center justify-center px-4 py-8 select-none bg-[#192B38]">
       <motion.div
         animate={{
-          scale: isSubmitting ? 0.95 : 1,
+          scale: isSubmitting ? 0.96 : 1,
           opacity: isSubmitting ? 0 : 1,
-          y: isSubmitting ? -20 : 0,
+          y: isSubmitting ? -16 : 0,
         }}
-        transition={{ duration: 0.4 }}
-        className="relative w-full max-w-2xl bg-[#0F162B]/90 border border-[#DAA87B]/40 rounded-2xl p-6 md:p-8 shadow-2xl backdrop-blur-xl"
+        transition={{ duration: 0.35 }}
+        className="relative w-full max-w-2xl bg-[#223846]/95 border border-[#DAB48A]/40 rounded-2xl p-6 sm:p-8 md:p-10 shadow-2xl backdrop-blur-md"
       >
-        {/* Subtle Ornamental Top Node */}
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-0.5 rounded-full bg-[#172B38] border border-[#DAA87B]/40 text-[#C6F68D] font-mono text-[10px] tracking-widest uppercase flex items-center space-x-1">
-          <Sparkles className="w-3 h-3" />
-          <span>BƯỚC 01 • KHỞI Ý NGUYỆN</span>
+        {/* Subtle Top Badge */}
+        <div className="flex justify-center mb-4">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#284450] border border-[#DAB48A]/35 text-[#C7E9AD] font-body text-xs font-medium">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Bước 01 • Khởi tạo ý nguyện</span>
+          </div>
         </div>
 
-        {/* Heading */}
-        <div className="text-center mt-2 mb-6">
-          <h2 className="font-display text-3xl md:text-4xl text-[#E9DFC9] font-light tracking-wide">
+        {/* Editorial Heading (Fraunces) */}
+        <div className="text-center mb-8">
+          <h2 className="font-display text-3xl sm:text-4xl text-[#F4EADA] font-light tracking-wide leading-tight">
             Điều gì đang khiến bạn băn khoăn?
           </h2>
-          <p className="font-body text-xs md:text-sm text-[#B5AA94] mt-1.5">
-            Hãy tĩnh lặng trong vài giây và nghĩ về điều bạn thực sự muốn thấu suốt.
+          <p className="font-body text-sm text-[#C1CFD0] mt-2 max-w-md mx-auto leading-relaxed">
+            Hãy tĩnh lặng trong giây lát và nghĩ về điều bạn thực sự muốn thấu suốt.
           </p>
         </div>
 
         {/* Form Container */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Category Picker */}
+          {/* Category Selector Pills */}
           <div>
-            <label className="block font-mono text-xs uppercase tracking-wider text-[#B5AA94] mb-2.5">
+            <label className="block font-body text-xs font-semibold uppercase tracking-wider text-[#C1CFD0] mb-2.5">
               Lĩnh vực câu hỏi:
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
@@ -102,10 +104,10 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
                     key={cat.id}
                     type="button"
                     onClick={() => setCategory(cat.id)}
-                    className={`flex flex-col items-center justify-center p-3 rounded-xl border font-mono text-xs transition-all cursor-pointer ${
+                    className={`flex flex-col items-center justify-center p-3 rounded-xl border text-xs font-body transition-all cursor-pointer ${
                       isSelected
-                        ? "bg-[#172B38] border-[#C6F68D] text-[#C6F68D] shadow-celestial-glow"
-                        : "bg-[#0B1020]/60 border-[#DAA87B]/20 text-[#B5AA94] hover:border-[#DAA87B]/60 hover:text-[#E9DFC9]"
+                        ? "bg-[#284450] border-[#C7E9AD] text-[#C7E9AD] shadow-celestial-glow font-semibold"
+                        : "bg-[#192B38]/80 border-[#45616B]/60 text-[#C1CFD0] hover:border-[#DAB48A]/70 hover:text-[#F4EADA]"
                     }`}
                   >
                     <Icon className="w-4 h-4 mb-1.5" />
@@ -116,13 +118,13 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
             </div>
           </div>
 
-          {/* Question Textarea */}
+          {/* Question Textarea (Refined size: 16px/18px with comfortable line-height) */}
           <div>
-            <div className="flex justify-between items-center mb-1.5">
-              <label className="font-mono text-xs uppercase tracking-wider text-[#B5AA94]">
-                Câu hỏi của bạn (Có thể để trống để trải bài tổng quát):
+            <div className="flex justify-between items-center mb-2">
+              <label className="font-body text-xs font-semibold uppercase tracking-wider text-[#C1CFD0]">
+                Câu hỏi của bạn (hoặc để trống để trải bài tổng quát):
               </label>
-              <span className="font-mono text-[11px] text-[#B5AA94]/70">
+              <span className="font-mono text-xs text-[#A7BBC0]">
                 {question.length}/300
               </span>
             </div>
@@ -133,19 +135,19 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
                 onChange={(e) => setQuestion(e.target.value.slice(0, 300))}
                 rows={3}
                 placeholder="Nhập băn khoăn của bạn hoặc chọn câu hỏi gợi ý bên dưới..."
-                className="w-full rounded-xl bg-[#0B1020]/80 border border-[#DAA87B]/30 focus:border-[#C6F68D] focus:ring-1 focus:ring-[#C6F68D] p-3.5 text-sm font-body text-[#E9DFC9] placeholder-[#B5AA94]/40 outline-none transition-all resize-none"
+                className="w-full rounded-xl bg-[#192B38] border border-[#45616B] focus:border-[#C7E9AD] focus:ring-1 focus:ring-[#C7E9AD] p-4 text-base md:text-lg font-body text-[#F4EADA] placeholder-[#A7BBC0]/50 outline-none transition-all resize-none leading-relaxed"
               />
             </div>
 
             {/* Inspiration Suggestion Pill */}
-            <div className="mt-2 flex items-start space-x-2">
-              <span className="font-mono text-[10px] text-[#DAA87B] uppercase flex-shrink-0 mt-0.5">
+            <div className="mt-2.5 flex items-start space-x-2">
+              <span className="font-body text-xs text-[#DAB48A] font-semibold flex-shrink-0 mt-0.5">
                 Gợi ý:
               </span>
               <button
                 type="button"
                 onClick={() => handleUseExample(activeCategoryObj.example)}
-                className="text-left font-body text-xs text-[#B5AA94] hover:text-[#C6F68D] italic underline transition-colors cursor-pointer line-clamp-1"
+                className="text-left font-body text-xs text-[#C1CFD0] hover:text-[#C7E9AD] italic underline transition-colors cursor-pointer line-clamp-1"
               >
                 "{activeCategoryObj.example}"
               </button>
@@ -153,21 +155,21 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
           </div>
 
           {/* Spread Type & Options Configuration */}
-          <div className="p-4 rounded-xl bg-[#172B38]/50 border border-[#DAA87B]/20 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="p-4 sm:p-5 rounded-xl bg-[#284450]/80 border border-[#DAB48A]/25 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Spread mode */}
             <div>
-              <label className="block font-mono text-[11px] uppercase tracking-wider text-[#B5AA94] mb-2 flex items-center space-x-1.5">
-                <Layers className="w-3.5 h-3.5 text-[#DAA87B]" />
+              <label className="block font-body text-xs font-semibold uppercase tracking-wider text-[#C1CFD0] mb-2 flex items-center space-x-1.5">
+                <Layers className="w-3.5 h-3.5 text-[#DAB48A]" />
                 <span>Kiểu trải bài:</span>
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => setSpreadType("three_card")}
-                  className={`px-3 py-2 rounded-lg font-mono text-xs transition-all cursor-pointer ${
+                  className={`px-3 py-2 rounded-lg font-body text-xs transition-all cursor-pointer ${
                     spreadType === "three_card"
-                      ? "bg-[#C6F68D] text-[#0B1020] font-bold"
-                      : "bg-[#0B1020]/70 text-[#B5AA94] border border-[#DAA87B]/20"
+                      ? "bg-[#C7E9AD] text-[#111E2C] font-semibold shadow-sm"
+                      : "bg-[#192B38] text-[#C1CFD0] border border-[#45616B]"
                   }`}
                 >
                   Trải 3 lá (Chính)
@@ -175,10 +177,10 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
                 <button
                   type="button"
                   onClick={() => setSpreadType("single")}
-                  className={`px-3 py-2 rounded-lg font-mono text-xs transition-all cursor-pointer ${
+                  className={`px-3 py-2 rounded-lg font-body text-xs transition-all cursor-pointer ${
                     spreadType === "single"
-                      ? "bg-[#C6F68D] text-[#0B1020] font-bold"
-                      : "bg-[#0B1020]/70 text-[#B5AA94] border border-[#DAA87B]/20"
+                      ? "bg-[#C7E9AD] text-[#111E2C] font-semibold shadow-sm"
+                      : "bg-[#192B38] text-[#C1CFD0] border border-[#45616B]"
                   }`}
                 >
                   Trải 1 lá (Đơn)
@@ -188,18 +190,18 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
 
             {/* Allow reversed cards toggle */}
             <div>
-              <label className="block font-mono text-[11px] uppercase tracking-wider text-[#B5AA94] mb-2 flex items-center space-x-1.5">
-                <Sliders className="w-3.5 h-3.5 text-[#DAA87B]" />
+              <label className="block font-body text-xs font-semibold uppercase tracking-wider text-[#C1CFD0] mb-2 flex items-center space-x-1.5">
+                <Sliders className="w-3.5 h-3.5 text-[#DAB48A]" />
                 <span>Quy ước trải bài:</span>
               </label>
-              <label className="flex items-center space-x-3 p-2 rounded-lg bg-[#0B1020]/70 border border-[#DAA87B]/20 cursor-pointer">
+              <label className="flex items-center space-x-3 p-2 rounded-lg bg-[#192B38] border border-[#45616B] cursor-pointer">
                 <input
                   type="checkbox"
                   checked={allowReversed}
                   onChange={(e) => setAllowReversed(e.target.checked)}
-                  className="w-4 h-4 rounded text-[#C6F68D] focus:ring-0 accent-[#C6F68D] cursor-pointer"
+                  className="w-4 h-4 rounded text-[#C7E9AD] focus:ring-0 accent-[#C7E9AD] cursor-pointer"
                 />
-                <span className="font-body text-xs text-[#E9DFC9]">
+                <span className="font-body text-xs text-[#F4EADA]">
                   Cho phép lá bài ngược (Reversed)
                 </span>
               </label>
@@ -210,9 +212,9 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
           <div className="pt-2 flex justify-end">
             <button
               type="submit"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-3.5 rounded-full bg-[#C6F68D] text-[#0B1020] font-mono text-xs uppercase tracking-widest font-bold shadow-celestial-glow hover:bg-[#A0D462] hover:scale-[1.02] transition-all cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-3.5 rounded-full bg-[#C7E9AD] text-[#111E2C] font-body text-sm font-semibold tracking-wide shadow-celestial-glow hover:bg-[#A4D283] hover:scale-[1.02] transition-all cursor-pointer"
             >
-              <span>Tiến vào Kho Lưu Trữ Bài</span>
+              <span>Tiến vào kho lưu trữ bài</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -221,4 +223,3 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
     </div>
   );
 };
-

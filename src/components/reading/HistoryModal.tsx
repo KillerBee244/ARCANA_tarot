@@ -44,34 +44,34 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
         <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.94 }}
-          className="relative w-full max-w-2xl max-h-[85vh] bg-[#0F162B] border border-[#DAA87B]/40 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+          exit={{ opacity: 0, scale: 0.95 }}
+          className="relative w-full max-w-2xl max-h-[85vh] bg-[#223846] border border-[#DAB48A]/40 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-[#F4EADA]"
         >
           {/* Header */}
-          <div className="p-4 md:p-6 border-b border-[#DAA87B]/20 flex items-center justify-between">
-            <div className="flex items-center space-x-2.5">
-              <Archive className="w-5 h-5 text-[#DAA87B]" />
-              <h3 className="font-display text-xl text-[#E9DFC9]">
-                Kho Lưu Trữ Trải Bài Của Bạn
+          <div className="p-5 sm:p-6 border-b border-[#DAB48A]/25 flex items-center justify-between bg-[#192B38]">
+            <div className="flex items-center space-x-3">
+              <Archive className="w-5 h-5 text-[#DAB48A]" />
+              <h3 className="font-display text-xl sm:text-2xl text-[#F4EADA]">
+                Kho Lưu Trữ Trải Bài
               </h3>
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-[#B5AA94] hover:text-[#E9DFC9] hover:bg-[#172B38] transition-colors"
+              className="p-2 rounded-lg text-[#C1CFD0] hover:text-[#F4EADA] hover:bg-[#284450] transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Body List */}
-          <div className="p-4 md:p-6 overflow-y-auto flex-1 space-y-3">
+          <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-3">
             {readings.length === 0 ? (
-              <div className="py-12 text-center text-[#B5AA94] space-y-2">
-                <Clock className="w-8 h-8 mx-auto text-[#DAA87B]/40 mb-2" />
+              <div className="py-12 text-center text-[#C1CFD0] space-y-2">
+                <Clock className="w-8 h-8 mx-auto text-[#DAB48A]/40 mb-2" />
                 <p className="font-body text-sm">Chưa có trải bài nào được lưu.</p>
-                <p className="font-mono text-xs text-[#B5AA94]/70">
+                <p className="font-body text-xs text-[#A7BBC0]">
                   Sau mỗi lượt trải bài, bạn có thể nhấn "Lưu trải bài" để xem lại tại đây.
                 </p>
               </div>
@@ -92,21 +92,21 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
                       onSelectReading(rec);
                       onClose();
                     }}
-                    className="p-4 rounded-xl bg-[#172B38]/60 border border-[#DAA87B]/20 hover:border-[#C6F68D]/50 transition-all cursor-pointer flex items-center justify-between group"
+                    className="p-4 rounded-xl bg-[#192B38] border border-[#DAB48A]/20 hover:border-[#C7E9AD]/50 transition-all cursor-pointer flex items-center justify-between group shadow-sm"
                   >
-                    <div className="space-y-1">
+                    <div className="space-y-1.5">
                       <div className="flex items-center space-x-2">
-                        <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B1020] text-[#C6F68D] border border-[#C6F68D]/30 uppercase">
+                        <span className="font-body text-[10px] px-2 py-0.5 rounded-full bg-[#284450] text-[#C7E9AD] border border-[#C7E9AD]/30 uppercase font-semibold">
                           {rec.category}
                         </span>
-                        <span className="font-mono text-[11px] text-[#B5AA94]">
+                        <span className="font-mono text-xs text-[#A7BBC0]">
                           {formattedDate}
                         </span>
                       </div>
-                      <h4 className="font-display text-base text-[#E9DFC9] font-medium group-hover:text-[#C6F68D] transition-colors">
+                      <h4 className="font-display text-base sm:text-lg text-[#F4EADA] font-medium group-hover:text-[#C7E9AD] transition-colors">
                         "{rec.question || "Trải bài định hướng tổng quát"}"
                       </h4>
-                      <p className="font-mono text-xs text-[#B5AA94]">
+                      <p className="font-body text-xs text-[#C1CFD0]">
                         {rec.spreadType === "single" ? "Trải 1 lá" : "Trải 3 lá"}:{" "}
                         {rec.selectedCards.map((c) => c.cardId).join(", ")}
                       </p>
@@ -115,12 +115,12 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={(e) => handleDelete(rec.readingId, e)}
-                        className="p-2 rounded-lg text-[#B5AA94] hover:text-red-400 hover:bg-red-950/40 transition-colors"
+                        className="p-2 rounded-lg text-[#A7BBC0] hover:text-red-400 hover:bg-red-950/40 transition-colors"
                         title="Xóa trải bài này"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
-                      <ArrowUpRight className="w-5 h-5 text-[#DAA87B] group-hover:text-[#C6F68D] transition-colors" />
+                      <ArrowUpRight className="w-5 h-5 text-[#DAB48A] group-hover:text-[#C7E9AD] transition-colors" />
                     </div>
                   </div>
                 );
@@ -130,13 +130,13 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
 
           {/* Footer */}
           {readings.length > 0 && (
-            <div className="p-4 border-t border-[#DAA87B]/20 flex justify-between items-center bg-[#0B1020]/50">
-              <span className="font-mono text-xs text-[#B5AA94]">
+            <div className="p-4 border-t border-[#DAB48A]/20 flex justify-between items-center bg-[#192B38]">
+              <span className="font-body text-xs text-[#A7BBC0]">
                 Tổng số: {readings.length} trải bài được lưu trong trình duyệt
               </span>
               <button
                 onClick={handleClearAll}
-                className="font-mono text-xs text-red-400 hover:text-red-300 underline"
+                className="font-body text-xs text-red-400 hover:text-red-300 underline cursor-pointer"
               >
                 Xóa tất cả
               </button>
@@ -147,4 +147,3 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
     </AnimatePresence>
   );
 };
-

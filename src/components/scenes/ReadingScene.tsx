@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "motion/react";
 import { CardSpread } from "@/components/tarot/CardSpread";
 import { RulebaseReading } from "@/components/reading/RulebaseReading";
 import { AIReading } from "@/components/reading/AIReading";
@@ -131,32 +130,34 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
     <div className="relative w-full max-w-6xl mx-auto px-4 py-8 select-none">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-6 right-6 z-50 px-4 py-2.5 rounded-xl bg-[#172B38] border border-[#C6F68D] text-[#C6F68D] font-mono text-xs shadow-celestial-glow animate-fade-in flex items-center space-x-2">
+        <div className="fixed top-6 right-6 z-50 px-4 py-2.5 rounded-xl bg-[#284450] border border-[#C7E9AD] text-[#C7E9AD] font-body text-xs font-semibold shadow-celestial-glow animate-fade-in flex items-center space-x-2">
           <Sparkles className="w-4 h-4" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       {/* Top Reading Header */}
-      <div className="text-center mb-8 space-y-2">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#172B38]/80 border border-[#DAA87B]/30">
-          <Compass className="w-3.5 h-3.5 text-[#C6F68D]" />
-          <span className="font-mono text-xs text-[#E9DFC9] uppercase tracking-widest">
-            THE REVELATION • KẾT QUẢ KHAI MỞ
+      <div className="text-center mb-6 space-y-2">
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#284450]/80 border border-[#DAB48A]/40 backdrop-blur-md shadow-sm">
+          <Compass className="w-3.5 h-3.5 text-[#C7E9AD]" />
+          <span className="font-body text-xs text-[#F4EADA] font-semibold tracking-wide">
+            The Revelation • Kết quả Khai Mở
           </span>
         </div>
-        <h2 className="font-display text-3xl md:text-5xl text-[#E9DFC9] font-light tracking-wide">
+        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-[#F4EADA] font-light tracking-wide max-w-2xl mx-auto leading-relaxed">
           "{question || "Thông điệp vũ trụ cho hiện tại"}"
         </h2>
-        <div className="flex justify-center items-center space-x-3 text-xs font-mono text-[#B5AA94]">
-          <span>LĨNH VỰC: {category.toUpperCase()}</span>
+        <div className="flex justify-center items-center space-x-3 text-xs font-body text-[#C1CFD0]">
+          <span className="font-semibold uppercase tracking-wider text-[#DAB48A]">
+            LĨNH VỰC: {category.toUpperCase()}
+          </span>
           <span>•</span>
           <span>{spreadDef.nameVi.split("—")[0]}</span>
         </div>
       </div>
 
-      {/* Prominent Visual Anchor: The Selected Cards Spread */}
-      <div className="mb-12">
+      {/* Prominent Visual Anchor: The Selected Cards Spread with Authentic Artwork */}
+      <div className="mb-10">
         <CardSpread
           spreadType={spreadType}
           cards={populatedCards}
@@ -165,15 +166,15 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
         />
       </div>
 
-      {/* Dual Reading Layout: Left = Rulebase, Right = AI */}
+      {/* Dual Reading Layout: Left = Authentic Parchment Rulebase, Right = Elevated Teal AI */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
-        {/* Section I: Ancient Wisdom (Rulebase) */}
-        <div className="p-6 rounded-2xl bg-[#0F162B]/85 border border-[#DAA87B]/30 backdrop-blur-md shadow-xl">
+        {/* Section A: Ancient Wisdom (Parchment Treatment: #F4ECDD, #253C44 text) */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-[#F4ECDD] border border-[#D8C8B3] shadow-parchment">
           <RulebaseReading interpretation={rulebaseResult} />
         </div>
 
-        {/* Section II: Living Interpretation (Gemini) */}
-        <div className="p-6 rounded-2xl bg-[#0F162B]/85 border border-[#C6F68D]/30 backdrop-blur-md shadow-xl">
+        {/* Section B: Living Interpretation (Elevated Teal Treatment: #284450) */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-[#284450] border border-[#80BDB2]/40 shadow-xl">
           <AIReading
             aiStatus={aiStatus}
             aiResult={aiResult}
@@ -185,7 +186,7 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
       </div>
 
       {/* Bottom Action Controls */}
-      <div className="mt-12">
+      <div className="mt-10">
         <ReadingActions
           onSave={handleSave}
           onCopy={handleCopy}
@@ -204,4 +205,3 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
     </div>
   );
 };
-

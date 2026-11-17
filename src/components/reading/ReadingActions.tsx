@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Bookmark, Copy, RotateCcw, Check, Archive, Share2 } from "lucide-react";
+import { Bookmark, Copy, RotateCcw, Check, Archive } from "lucide-react";
 
 interface ReadingActionsProps {
   onSave: () => void;
@@ -27,37 +27,37 @@ export const ReadingActions: React.FC<ReadingActionsProps> = ({
   };
 
   return (
-    <div className="w-full flex flex-wrap items-center justify-between gap-3 pt-6 border-t border-[#DAA87B]/30 select-none">
+    <div className="w-full flex flex-wrap items-center justify-between gap-3 pt-6 border-t border-[#DAB48A]/30 select-none">
       <div className="flex flex-wrap items-center gap-2.5">
         {/* Save button */}
         <button
           onClick={onSave}
           disabled={isSaved}
-          className={`flex items-center space-x-1.5 px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-all cursor-pointer ${
+          className={`flex items-center space-x-2 px-4 py-2.5 rounded-full font-body text-xs font-semibold transition-all cursor-pointer ${
             isSaved
-              ? "bg-[#172B38] text-[#C6F68D] border border-[#C6F68D]/40"
-              : "bg-[#172B38] text-[#E9DFC9] border border-[#DAA87B]/30 hover:border-[#DAA87B] hover:bg-[#172B38]/80"
+              ? "bg-[#284450] text-[#C7E9AD] border border-[#C7E9AD]/50"
+              : "bg-[#284450] text-[#F4EADA] border border-[#DAB48A]/40 hover:border-[#DAB48A] hover:bg-[#385968]"
           }`}
         >
-          {isSaved ? <Check className="w-3.5 h-3.5 text-[#C6F68D]" /> : <Bookmark className="w-3.5 h-3.5 text-[#DAA87B]" />}
+          {isSaved ? <Check className="w-3.5 h-3.5 text-[#C7E9AD]" /> : <Bookmark className="w-3.5 h-3.5 text-[#DAB48A]" />}
           <span>{isSaved ? "Đã lưu" : "Lưu trải bài"}</span>
         </button>
 
         {/* Copy button */}
         <button
           onClick={handleCopyClick}
-          className="flex items-center space-x-1.5 px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-[#172B38] text-[#E9DFC9] border border-[#DAA87B]/30 hover:border-[#DAA87B] hover:bg-[#172B38]/80 transition-all cursor-pointer"
+          className="flex items-center space-x-2 px-4 py-2.5 rounded-full font-body text-xs font-semibold bg-[#284450] text-[#F4EADA] border border-[#DAB48A]/40 hover:border-[#DAB48A] hover:bg-[#385968] transition-all cursor-pointer"
         >
-          {copied ? <Check className="w-3.5 h-3.5 text-[#C6F68D]" /> : <Copy className="w-3.5 h-3.5 text-[#DAA87B]" />}
+          {copied ? <Check className="w-3.5 h-3.5 text-[#C7E9AD]" /> : <Copy className="w-3.5 h-3.5 text-[#DAB48A]" />}
           <span>{copied ? "Đã chép" : "Sao chép kết quả"}</span>
         </button>
 
         {/* History drawer button */}
         <button
           onClick={onOpenHistory}
-          className="flex items-center space-x-1.5 px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-[#172B38] text-[#B5AA94] border border-[#DAA87B]/20 hover:text-[#E9DFC9] hover:border-[#DAA87B]/50 transition-all cursor-pointer"
+          className="flex items-center space-x-2 px-4 py-2.5 rounded-full font-body text-xs font-semibold bg-[#284450] text-[#C1CFD0] border border-[#DAB48A]/30 hover:text-[#F4EADA] hover:border-[#DAB48A] transition-all cursor-pointer"
         >
-          <Archive className="w-3.5 h-3.5 text-[#DAA87B]" />
+          <Archive className="w-3.5 h-3.5 text-[#DAB48A]" />
           <span>Lịch sử</span>
         </button>
       </div>
@@ -65,12 +65,11 @@ export const ReadingActions: React.FC<ReadingActionsProps> = ({
       {/* Restart reading */}
       <button
         onClick={onRestart}
-        className="flex items-center space-x-1.5 px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-[#C6F68D] text-[#0B1020] font-semibold hover:bg-[#A0D462] hover:shadow-celestial-glow transition-all cursor-pointer"
+        className="flex items-center space-x-2 px-6 py-2.5 rounded-full font-body text-xs font-semibold tracking-wide bg-[#C7E9AD] text-[#111E2C] hover:bg-[#A4D283] hover:shadow-celestial-glow transition-all cursor-pointer"
       >
         <RotateCcw className="w-3.5 h-3.5" />
-        <span>Trải Bài Mới</span>
+        <span>Trải bài mới</span>
       </button>
     </div>
   );
 };
-

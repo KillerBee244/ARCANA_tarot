@@ -3,38 +3,64 @@
 @tailwind utilities;
 
 :root {
-  --background: #0B1020;
-  --foreground: #E9DFC9;
+  --color-night: #111E2C;
+  --color-background: #192B38;
+  --color-background-soft: #223846;
+
+  --color-surface: #284450;
+  --color-surface-elevated: #385968;
+  --color-surface-hover: #456675;
+
+  --color-text-primary: #F4EADA;
+  --color-text-secondary: #C1CFD0;
+  --color-text-muted: #A7BBC0;
+
+  --color-accent-copper: #DAB48A;
+  --color-accent-lime: #C7E9AD;
+  --color-accent-teal: #80BDB2;
+
+  --color-paper: #F4ECDD;
+  --color-paper-secondary: #E8DCC9;
+  --color-paper-text: #253C44;
+  --color-paper-muted: #52636A;
+  --color-paper-border: #D8C8B3;
+
+  --color-border-subtle: #45616B;
+  --color-border-strong: #769095;
+
+  --background: var(--color-background);
+  --foreground: var(--color-text-primary);
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--color-text-primary);
+  background: var(--color-background);
   font-family: var(--font-vietnam), system-ui, sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.4s ease;
 }
 
-/* Custom Celestial Scrollbar */
+/* Custom Celestial Editorial Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B1020;
+  background: #192B38;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #172B38;
+  background: #385968;
   border-radius: 9999px;
-  border: 1px solid rgba(218, 168, 123, 0.2);
+  border: 1px solid rgba(218, 180, 138, 0.25);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #DAA87B;
+  background: #DAB48A;
 }
 
-/* Hide scrollbar for clean carousels */
+/* Hide scrollbar for carousels */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -72,4 +98,3 @@ body {
     scroll-behavior: auto !important;
   }
 }
-

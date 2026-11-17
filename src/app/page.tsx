@@ -55,29 +55,29 @@ export default function ArcanaPage() {
   };
 
   return (
-    <main className="relative min-h-screen bg-[#0B1020] text-[#E9DFC9] flex flex-col justify-between selection:bg-[#C6F68D] selection:text-[#0B1020]">
+    <main className="relative min-h-screen bg-[#192B38] text-[#F4EADA] flex flex-col justify-between selection:bg-[#C7E9AD] selection:text-[#111E2C]">
       {/* Top Universal Celestial Navigation Header */}
-      <header className="sticky top-0 z-40 w-full px-4 md:px-8 py-3.5 bg-[#0B1020]/80 backdrop-blur-md border-b border-[#DAA87B]/15 flex items-center justify-between">
-        {/* Brand Logo */}
+      <header className="sticky top-0 z-40 w-full px-4 md:px-8 py-3.5 bg-[#111E2C]/85 backdrop-blur-md border-b border-[#DAB48A]/20 flex items-center justify-between">
+        {/* Brand Logo (Fraunces) */}
         <div
           onClick={() => navigateScene("PORTAL")}
           className="flex items-center space-x-2.5 cursor-pointer group"
         >
-          <div className="w-7 h-7 rounded-full bg-[#172B38] border border-[#DAA87B]/40 flex items-center justify-center group-hover:border-[#C6F68D] transition-colors">
-            <Sparkles className="w-3.5 h-3.5 text-[#C6F68D]" />
+          <div className="w-8 h-8 rounded-full bg-[#284450] border border-[#DAB48A]/50 flex items-center justify-center group-hover:border-[#C7E9AD] transition-colors shadow-sm">
+            <Sparkles className="w-4 h-4 text-[#C7E9AD]" />
           </div>
-          <div>
-            <span className="font-display text-lg tracking-widest text-[#E9DFC9] font-medium leading-none">
+          <div className="flex items-baseline space-x-2">
+            <span className="font-display text-xl tracking-wider text-[#F4EADA] font-medium leading-none">
               ARCANA
             </span>
-            <span className="hidden sm:inline-block font-mono text-[9px] tracking-widest text-[#DAA87B] uppercase ml-2">
-              THE ARCHIVE
+            <span className="hidden sm:inline-block font-mono text-[10px] tracking-widest text-[#DAB48A] uppercase">
+              ARCHIVE 2.0
             </span>
           </div>
         </div>
 
-        {/* Scene Journey Step Indicator */}
-        <div className="hidden md:flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#0F162B] border border-[#DAA87B]/20">
+        {/* Scene Journey Step Indicator (Refined Typography) */}
+        <div className="hidden md:flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#223846]/90 border border-[#DAB48A]/25 shadow-sm">
           {SCENE_STEPS.map((step, idx) => {
             const isCurrent = state.scene === step.id;
             const isPassed =
@@ -86,17 +86,17 @@ export default function ArcanaPage() {
             return (
               <React.Fragment key={step.id}>
                 {idx > 0 && (
-                  <span className="text-[#DAA87B]/30 font-mono text-[10px]">
-                    /
+                  <span className="text-[#DAB48A]/40 text-xs">
+                    •
                   </span>
                 )}
                 <span
-                  className={`font-mono text-[10px] tracking-wider uppercase transition-colors ${
+                  className={`font-body text-xs transition-colors ${
                     isCurrent
-                      ? "text-[#C6F68D] font-bold"
+                      ? "text-[#C7E9AD] font-bold"
                       : isPassed
-                      ? "text-[#DAA87B]"
-                      : "text-[#B5AA94]/40"
+                      ? "text-[#DAB48A] font-medium"
+                      : "text-[#A7BBC0]/60"
                   }`}
                 >
                   {step.label}
@@ -107,24 +107,24 @@ export default function ArcanaPage() {
         </div>
 
         {/* Quick Utility Actions: Sound & History */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2.5">
           {/* Sound Toggle */}
           <button
             onClick={toggleSound}
-            className="p-2 rounded-full text-[#B5AA94] hover:text-[#E9DFC9] hover:bg-[#172B38] transition-colors cursor-pointer"
+            className="p-2 rounded-full text-[#C1CFD0] hover:text-[#F4EADA] hover:bg-[#284450] transition-colors cursor-pointer"
             title={isMuted ? "Bật âm thanh hiệu ứng" : "Tắt âm thanh hiệu ứng"}
             aria-label="Toggle Sound"
           >
-            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-[#C6F68D]" />}
+            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-[#C7E9AD]" />}
           </button>
 
           {/* History Drawer Trigger */}
           <button
             onClick={() => setIsHistoryModalOpen(true)}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full font-mono text-xs text-[#E9DFC9] bg-[#172B38] border border-[#DAA87B]/30 hover:border-[#DAA87B] transition-all cursor-pointer"
+            className="flex items-center space-x-2 px-3.5 py-1.5 rounded-full font-body text-xs font-semibold text-[#F4EADA] bg-[#284450] border border-[#DAB48A]/40 hover:border-[#DAB48A] hover:bg-[#385968] transition-all cursor-pointer shadow-sm"
           >
-            <Archive className="w-3.5 h-3.5 text-[#DAA87B]" />
-            <span className="hidden sm:inline">Lưu trữ</span>
+            <Archive className="w-3.5 h-3.5 text-[#DAB48A]" />
+            <span className="hidden sm:inline">Lịch sử</span>
           </button>
         </div>
       </header>
@@ -150,10 +150,10 @@ export default function ArcanaPage() {
           {state.scene === "QUESTION" && (
             <motion.div
               key="scene-question"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.4 }}
             >
               <QuestionScene
                 initialQuestion={state.question}
@@ -173,7 +173,7 @@ export default function ArcanaPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.45 }}
             >
               <DeckScene
                 shuffledDeck={state.shuffledDeck}
@@ -195,7 +195,7 @@ export default function ArcanaPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.45 }}
             >
               <RevealScene
                 spreadType={state.spreadType}
@@ -208,10 +208,10 @@ export default function ArcanaPage() {
           {state.scene === "READING" && state.rulebaseResult && (
             <motion.div
               key="scene-reading"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5 }}
             >
               <ReadingScene
                 readingId={state.readingId}
@@ -240,17 +240,17 @@ export default function ArcanaPage() {
         onSelectReading={restoreReading}
       />
 
-      {/* Footer */}
-      <footer className="w-full px-6 py-4 border-t border-[#DAA87B]/15 flex flex-col sm:flex-row items-center justify-between text-[#B5AA94]/60 font-mono text-[10px] space-y-2 sm:space-y-0">
+      {/* Footer (Editorial Fraunces & Be Vietnam Pro) */}
+      <footer className="w-full px-6 py-4 border-t border-[#DAB48A]/20 flex flex-col sm:flex-row items-center justify-between text-[#A7BBC0] font-body text-xs space-y-2 sm:space-y-0 bg-[#111E2C]/70">
         <div>
-          <span>ARCANA © CELESTIAL NEO-ARCHIVE • </span>
-          <span className="text-[#DAA87B]/80">MỖI CÂU HỎI MỞ RA MỘT VŨ TRỤ</span>
+          <span className="font-display font-medium text-[#F4EADA]">ARCANA 2.0</span>
+          <span> — Celestial Editorial Archive • </span>
+          <span className="text-[#DAB48A] italic">Mỗi câu hỏi mở ra một vũ trụ</span>
         </div>
-        <p className="max-w-md text-center sm:text-right">
+        <p className="max-w-md text-center sm:text-right text-[#C1CFD0]">
           Thông điệp mang tính chiêm nghiệm và đối thoại nội tâm.
         </p>
       </footer>
     </main>
   );
 }
-

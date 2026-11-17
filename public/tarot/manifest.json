@@ -1,0 +1,635 @@
+{
+  "deck": "Rider-Waite-Smith Tarot Deck (1909)",
+  "artist": "Pamela Colman Smith",
+  "author": "Arthur Edward Waite",
+  "license": "Public Domain (first published in 1909)",
+  "source": "Wikimedia Commons (TaionWC High-Resolution Collection)",
+  "downloadedAt": "2026-11-17T04:24:34.454Z",
+  "cardCount": 78,
+  "cards": {
+    "major-00-fool": {
+      "id": "major-00-fool",
+      "name": "The Fool",
+      "localPath": "/tarot/cards/major-00-fool.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_00_Fool.jpg",
+      "width": 600,
+      "height": 1006
+    },
+    "major-01-magician": {
+      "id": "major-01-magician",
+      "name": "The Magician",
+      "localPath": "/tarot/cards/major-01-magician.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_01_Magician.jpg",
+      "width": 600,
+      "height": 1040
+    },
+    "major-02-high-priestess": {
+      "id": "major-02-high-priestess",
+      "name": "The High Priestess",
+      "localPath": "/tarot/cards/major-02-high-priestess.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_02_High_Priestess.jpg",
+      "width": 600,
+      "height": 1031
+    },
+    "major-03-empress": {
+      "id": "major-03-empress",
+      "name": "The Empress",
+      "localPath": "/tarot/cards/major-03-empress.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_03_Empress.jpg",
+      "width": 600,
+      "height": 1026
+    },
+    "major-04-emperor": {
+      "id": "major-04-emperor",
+      "name": "The Emperor",
+      "localPath": "/tarot/cards/major-04-emperor.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_04_Emperor.jpg",
+      "width": 600,
+      "height": 1031
+    },
+    "major-05-hierophant": {
+      "id": "major-05-hierophant",
+      "name": "The Hierophant",
+      "localPath": "/tarot/cards/major-05-hierophant.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_05_Hierophant.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "major-06-lovers": {
+      "id": "major-06-lovers",
+      "name": "The Lovers",
+      "localPath": "/tarot/cards/major-06-lovers.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_06_Lovers.jpg",
+      "width": 600,
+      "height": 1027
+    },
+    "major-07-chariot": {
+      "id": "major-07-chariot",
+      "name": "The Chariot",
+      "localPath": "/tarot/cards/major-07-chariot.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_07_Chariot.jpg",
+      "width": 600,
+      "height": 1036
+    },
+    "major-08-strength": {
+      "id": "major-08-strength",
+      "name": "Strength",
+      "localPath": "/tarot/cards/major-08-strength.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_08_Strength.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "major-09-hermit": {
+      "id": "major-09-hermit",
+      "name": "The Hermit",
+      "localPath": "/tarot/cards/major-09-hermit.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_09_Hermit.jpg",
+      "width": 600,
+      "height": 1026
+    },
+    "major-10-wheel-of-fortune": {
+      "id": "major-10-wheel-of-fortune",
+      "name": "Wheel of Fortune",
+      "localPath": "/tarot/cards/major-10-wheel-of-fortune.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_10_Wheel_of_Fortune.jpg",
+      "width": 600,
+      "height": 1043
+    },
+    "major-11-justice": {
+      "id": "major-11-justice",
+      "name": "Justice",
+      "localPath": "/tarot/cards/major-11-justice.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_11_Justice.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "major-12-hanged-man": {
+      "id": "major-12-hanged-man",
+      "name": "The Hanged Man",
+      "localPath": "/tarot/cards/major-12-hanged-man.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_12_Hanged_Man.jpg",
+      "width": 600,
+      "height": 1055
+    },
+    "major-13-death": {
+      "id": "major-13-death",
+      "name": "Death",
+      "localPath": "/tarot/cards/major-13-death.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_13_Death.jpg",
+      "width": 600,
+      "height": 1036
+    },
+    "major-14-temperance": {
+      "id": "major-14-temperance",
+      "name": "Temperance",
+      "localPath": "/tarot/cards/major-14-temperance.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_14_Temperance.jpg",
+      "width": 600,
+      "height": 1042
+    },
+    "major-15-devil": {
+      "id": "major-15-devil",
+      "name": "The Devil",
+      "localPath": "/tarot/cards/major-15-devil.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_15_Devil.jpg",
+      "width": 600,
+      "height": 1057
+    },
+    "major-16-tower": {
+      "id": "major-16-tower",
+      "name": "The Tower",
+      "localPath": "/tarot/cards/major-16-tower.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_16_Tower.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "major-17-star": {
+      "id": "major-17-star",
+      "name": "The Star",
+      "localPath": "/tarot/cards/major-17-star.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_17_Star.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "major-18-moon": {
+      "id": "major-18-moon",
+      "name": "The Moon",
+      "localPath": "/tarot/cards/major-18-moon.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_18_Moon.jpg",
+      "width": 600,
+      "height": 1036
+    },
+    "major-19-sun": {
+      "id": "major-19-sun",
+      "name": "The Sun",
+      "localPath": "/tarot/cards/major-19-sun.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_19_Sun.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "major-20-judgement": {
+      "id": "major-20-judgement",
+      "name": "Judgement",
+      "localPath": "/tarot/cards/major-20-judgement.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_20_Judgement.jpg",
+      "width": 600,
+      "height": 1033
+    },
+    "major-21-world": {
+      "id": "major-21-world",
+      "name": "The World",
+      "localPath": "/tarot/cards/major-21-world.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:RWS_Tarot_21_World.jpg",
+      "width": 600,
+      "height": 1036
+    },
+    "wands-01-ace": {
+      "id": "wands-01-ace",
+      "name": "Ace of Wands",
+      "localPath": "/tarot/cards/wands-01-ace.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands01.jpg",
+      "width": 600,
+      "height": 1042
+    },
+    "wands-02-two": {
+      "id": "wands-02-two",
+      "name": "Two of Wands",
+      "localPath": "/tarot/cards/wands-02-two.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands02.jpg",
+      "width": 600,
+      "height": 1033
+    },
+    "wands-03-three": {
+      "id": "wands-03-three",
+      "name": "Three of Wands",
+      "localPath": "/tarot/cards/wands-03-three.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands03.jpg",
+      "width": 600,
+      "height": 1044
+    },
+    "wands-04-four": {
+      "id": "wands-04-four",
+      "name": "Four of Wands",
+      "localPath": "/tarot/cards/wands-04-four.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands04.jpg",
+      "width": 600,
+      "height": 1040
+    },
+    "wands-05-five": {
+      "id": "wands-05-five",
+      "name": "Five of Wands",
+      "localPath": "/tarot/cards/wands-05-five.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands05.jpg",
+      "width": 600,
+      "height": 1040
+    },
+    "wands-06-six": {
+      "id": "wands-06-six",
+      "name": "Six of Wands",
+      "localPath": "/tarot/cards/wands-06-six.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands06.jpg",
+      "width": 600,
+      "height": 1030
+    },
+    "wands-07-seven": {
+      "id": "wands-07-seven",
+      "name": "Seven of Wands",
+      "localPath": "/tarot/cards/wands-07-seven.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands07.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "wands-08-eight": {
+      "id": "wands-08-eight",
+      "name": "Eight of Wands",
+      "localPath": "/tarot/cards/wands-08-eight.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands08.jpg",
+      "width": 600,
+      "height": 1033
+    },
+    "wands-09-nine": {
+      "id": "wands-09-nine",
+      "name": "Nine of Wands",
+      "localPath": "/tarot/cards/wands-09-nine.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands09.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "wands-10-ten": {
+      "id": "wands-10-ten",
+      "name": "Ten of Wands",
+      "localPath": "/tarot/cards/wands-10-ten.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands10.jpg",
+      "width": 600,
+      "height": 1046
+    },
+    "wands-11-page": {
+      "id": "wands-11-page",
+      "name": "Page of Wands",
+      "localPath": "/tarot/cards/wands-11-page.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands11.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "wands-12-knight": {
+      "id": "wands-12-knight",
+      "name": "Knight of Wands",
+      "localPath": "/tarot/cards/wands-12-knight.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands12.jpg",
+      "width": 600,
+      "height": 1033
+    },
+    "wands-13-queen": {
+      "id": "wands-13-queen",
+      "name": "Queen of Wands",
+      "localPath": "/tarot/cards/wands-13-queen.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands13.jpg",
+      "width": 600,
+      "height": 1030
+    },
+    "wands-14-king": {
+      "id": "wands-14-king",
+      "name": "King of Wands",
+      "localPath": "/tarot/cards/wands-14-king.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Wands14.jpg",
+      "width": 600,
+      "height": 1043
+    },
+    "cups-01-ace": {
+      "id": "cups-01-ace",
+      "name": "Ace of Cups",
+      "localPath": "/tarot/cards/cups-01-ace.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups01.jpg",
+      "width": 600,
+      "height": 1036
+    },
+    "cups-02-two": {
+      "id": "cups-02-two",
+      "name": "Two of Cups",
+      "localPath": "/tarot/cards/cups-02-two.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups02.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "cups-03-three": {
+      "id": "cups-03-three",
+      "name": "Three of Cups",
+      "localPath": "/tarot/cards/cups-03-three.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups03.jpg",
+      "width": 600,
+      "height": 1031
+    },
+    "cups-04-four": {
+      "id": "cups-04-four",
+      "name": "Four of Cups",
+      "localPath": "/tarot/cards/cups-04-four.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups04.jpg",
+      "width": 600,
+      "height": 1030
+    },
+    "cups-05-five": {
+      "id": "cups-05-five",
+      "name": "Five of Cups",
+      "localPath": "/tarot/cards/cups-05-five.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups05.jpg",
+      "width": 600,
+      "height": 1028
+    },
+    "cups-06-six": {
+      "id": "cups-06-six",
+      "name": "Six of Cups",
+      "localPath": "/tarot/cards/cups-06-six.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups06.jpg",
+      "width": 600,
+      "height": 1033
+    },
+    "cups-07-seven": {
+      "id": "cups-07-seven",
+      "name": "Seven of Cups",
+      "localPath": "/tarot/cards/cups-07-seven.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups07.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "cups-08-eight": {
+      "id": "cups-08-eight",
+      "name": "Eight of Cups",
+      "localPath": "/tarot/cards/cups-08-eight.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups08.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "cups-09-nine": {
+      "id": "cups-09-nine",
+      "name": "Nine of Cups",
+      "localPath": "/tarot/cards/cups-09-nine.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups09.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "cups-10-ten": {
+      "id": "cups-10-ten",
+      "name": "Ten of Cups",
+      "localPath": "/tarot/cards/cups-10-ten.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups10.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "cups-11-page": {
+      "id": "cups-11-page",
+      "name": "Page of Cups",
+      "localPath": "/tarot/cards/cups-11-page.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups11.jpg",
+      "width": 600,
+      "height": 1033
+    },
+    "cups-12-knight": {
+      "id": "cups-12-knight",
+      "name": "Knight of Cups",
+      "localPath": "/tarot/cards/cups-12-knight.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups12.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "cups-13-queen": {
+      "id": "cups-13-queen",
+      "name": "Queen of Cups",
+      "localPath": "/tarot/cards/cups-13-queen.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups13.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "cups-14-king": {
+      "id": "cups-14-king",
+      "name": "King of Cups",
+      "localPath": "/tarot/cards/cups-14-king.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cups14.jpg",
+      "width": 600,
+      "height": 1028
+    },
+    "swords-01-ace": {
+      "id": "swords-01-ace",
+      "name": "Ace of Swords",
+      "localPath": "/tarot/cards/swords-01-ace.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords01.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "swords-02-two": {
+      "id": "swords-02-two",
+      "name": "Two of Swords",
+      "localPath": "/tarot/cards/swords-02-two.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords02.jpg",
+      "width": 600,
+      "height": 1028
+    },
+    "swords-03-three": {
+      "id": "swords-03-three",
+      "name": "Three of Swords",
+      "localPath": "/tarot/cards/swords-03-three.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords03.jpg",
+      "width": 600,
+      "height": 1044
+    },
+    "swords-04-four": {
+      "id": "swords-04-four",
+      "name": "Four of Swords",
+      "localPath": "/tarot/cards/swords-04-four.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords04.jpg",
+      "width": 600,
+      "height": 1031
+    },
+    "swords-05-five": {
+      "id": "swords-05-five",
+      "name": "Five of Swords",
+      "localPath": "/tarot/cards/swords-05-five.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords05.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "swords-06-six": {
+      "id": "swords-06-six",
+      "name": "Six of Swords",
+      "localPath": "/tarot/cards/swords-06-six.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords06.jpg",
+      "width": 600,
+      "height": 1036
+    },
+    "swords-07-seven": {
+      "id": "swords-07-seven",
+      "name": "Seven of Swords",
+      "localPath": "/tarot/cards/swords-07-seven.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords07.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "swords-08-eight": {
+      "id": "swords-08-eight",
+      "name": "Eight of Swords",
+      "localPath": "/tarot/cards/swords-08-eight.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords08.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "swords-09-nine": {
+      "id": "swords-09-nine",
+      "name": "Nine of Swords",
+      "localPath": "/tarot/cards/swords-09-nine.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords09.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "swords-10-ten": {
+      "id": "swords-10-ten",
+      "name": "Ten of Swords",
+      "localPath": "/tarot/cards/swords-10-ten.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords10.jpg",
+      "width": 600,
+      "height": 1041
+    },
+    "swords-11-page": {
+      "id": "swords-11-page",
+      "name": "Page of Swords",
+      "localPath": "/tarot/cards/swords-11-page.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords11.jpg",
+      "width": 600,
+      "height": 1040
+    },
+    "swords-12-knight": {
+      "id": "swords-12-knight",
+      "name": "Knight of Swords",
+      "localPath": "/tarot/cards/swords-12-knight.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords12.jpg",
+      "width": 600,
+      "height": 1036
+    },
+    "swords-13-queen": {
+      "id": "swords-13-queen",
+      "name": "Queen of Swords",
+      "localPath": "/tarot/cards/swords-13-queen.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords13.jpg",
+      "width": 600,
+      "height": 1043
+    },
+    "swords-14-king": {
+      "id": "swords-14-king",
+      "name": "King of Swords",
+      "localPath": "/tarot/cards/swords-14-king.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Swords14.jpg",
+      "width": 600,
+      "height": 1031
+    },
+    "pentacles-01-ace": {
+      "id": "pentacles-01-ace",
+      "name": "Ace of Pentacles",
+      "localPath": "/tarot/cards/pentacles-01-ace.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents01.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "pentacles-02-two": {
+      "id": "pentacles-02-two",
+      "name": "Two of Pentacles",
+      "localPath": "/tarot/cards/pentacles-02-two.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents02.jpg",
+      "width": 600,
+      "height": 1036
+    },
+    "pentacles-03-three": {
+      "id": "pentacles-03-three",
+      "name": "Three of Pentacles",
+      "localPath": "/tarot/cards/pentacles-03-three.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents03.jpg",
+      "width": 600,
+      "height": 1031
+    },
+    "pentacles-04-four": {
+      "id": "pentacles-04-four",
+      "name": "Four of Pentacles",
+      "localPath": "/tarot/cards/pentacles-04-four.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents04.jpg",
+      "width": 600,
+      "height": 1038
+    },
+    "pentacles-05-five": {
+      "id": "pentacles-05-five",
+      "name": "Five of Pentacles",
+      "localPath": "/tarot/cards/pentacles-05-five.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents05.jpg",
+      "width": 600,
+      "height": 1036
+    },
+    "pentacles-06-six": {
+      "id": "pentacles-06-six",
+      "name": "Six of Pentacles",
+      "localPath": "/tarot/cards/pentacles-06-six.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents06.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "pentacles-07-seven": {
+      "id": "pentacles-07-seven",
+      "name": "Seven of Pentacles",
+      "localPath": "/tarot/cards/pentacles-07-seven.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents07.jpg",
+      "width": 600,
+      "height": 1034
+    },
+    "pentacles-08-eight": {
+      "id": "pentacles-08-eight",
+      "name": "Eight of Pentacles",
+      "localPath": "/tarot/cards/pentacles-08-eight.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents08.jpg",
+      "width": 600,
+      "height": 1031
+    },
+    "pentacles-09-nine": {
+      "id": "pentacles-09-nine",
+      "name": "Nine of Pentacles",
+      "localPath": "/tarot/cards/pentacles-09-nine.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents09.jpg",
+      "width": 600,
+      "height": 1040
+    },
+    "pentacles-10-ten": {
+      "id": "pentacles-10-ten",
+      "name": "Ten of Pentacles",
+      "localPath": "/tarot/cards/pentacles-10-ten.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents10.jpg",
+      "width": 600,
+      "height": 1033
+    },
+    "pentacles-11-page": {
+      "id": "pentacles-11-page",
+      "name": "Page of Pentacles",
+      "localPath": "/tarot/cards/pentacles-11-page.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents11.jpg",
+      "width": 600,
+      "height": 1036
+    },
+    "pentacles-12-knight": {
+      "id": "pentacles-12-knight",
+      "name": "Knight of Pentacles",
+      "localPath": "/tarot/cards/pentacles-12-knight.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents12.jpg",
+      "width": 600,
+      "height": 1036
+    },
+    "pentacles-13-queen": {
+      "id": "pentacles-13-queen",
+      "name": "Queen of Pentacles",
+      "localPath": "/tarot/cards/pentacles-13-queen.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents13.jpg",
+      "width": 600,
+      "height": 1039
+    },
+    "pentacles-14-king": {
+      "id": "pentacles-14-king",
+      "name": "King of Pentacles",
+      "localPath": "/tarot/cards/pentacles-14-king.jpg",
+      "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Pents14.jpg",
+      "width": 600,
+      "height": 1041
+    }
+  }
+}

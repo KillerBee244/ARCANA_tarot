@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { AIStatus, AIInterpretationResult } from "@/types/reading";
-import { Sparkles, RefreshCw, AlertTriangle, HelpCircle, MessageSquareQuote, CheckCircle2 } from "lucide-react";
+import { Sparkles, RefreshCw, AlertCircle, HelpCircle, MessageSquareQuote, CheckCircle2 } from "lucide-react";
 
 interface AIReadingProps {
   aiStatus: AIStatus;
@@ -37,16 +37,16 @@ export const AIReading: React.FC<AIReadingProps> = ({
   };
 
   return (
-    <div className="w-full flex flex-col space-y-6">
+    <div className="w-full flex flex-col space-y-6 text-[#F4EADA]">
       {/* Section Header */}
-      <div className="flex items-center justify-between border-b border-[#C6F68D]/30 pb-3">
+      <div className="flex items-center justify-between border-b border-[#80BDB2]/30 pb-3">
         <div className="flex items-center space-x-2.5">
-          <Sparkles className="w-5 h-5 text-[#C6F68D]" />
+          <Sparkles className="w-5 h-5 text-[#C7E9AD]" />
           <div>
-            <h3 className="font-display text-xl md:text-2xl text-[#E9DFC9] tracking-wide font-medium">
+            <h3 className="font-display text-2xl text-[#F4EADA] tracking-wide font-medium">
               Góc Nhìn AI
             </h3>
-            <span className="font-mono text-[10px] tracking-widest text-[#B5AA94] uppercase">
+            <span className="font-mono text-[11px] tracking-wider text-[#A7BBC0] uppercase font-medium">
               The Living Interpretation • Google Gemini Intelligence Layer
             </span>
           </div>
@@ -55,13 +55,13 @@ export const AIReading: React.FC<AIReadingProps> = ({
         {/* AI Status Badge */}
         <div>
           {aiStatus === "loading" && (
-            <div className="flex items-center space-x-2 px-2.5 py-1 rounded bg-[#172B38] border border-[#C6F68D]/40 text-[10px] font-mono text-[#C6F68D]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#C6F68D] animate-ping" />
+            <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-[#192B38] border border-[#C7E9AD]/50 text-xs font-body text-[#C7E9AD]">
+              <span className="w-2 h-2 rounded-full bg-[#C7E9AD] animate-ping" />
               <span>Đang kết nối...</span>
             </div>
           )}
           {aiStatus === "success" && (
-            <div className="flex items-center space-x-1 px-2.5 py-1 rounded bg-[#C6F68D]/15 border border-[#C6F68D]/40 text-[10px] font-mono text-[#C6F68D]">
+            <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#C7E9AD]/15 border border-[#C7E9AD]/40 text-xs font-body text-[#C7E9AD] font-medium">
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Đã hoàn tất</span>
             </div>
@@ -69,24 +69,23 @@ export const AIReading: React.FC<AIReadingProps> = ({
         </div>
       </div>
 
-      {/* RENDER BASED ON AI STATUS */}
       {/* 1. LOADING SKELETON */}
       {aiStatus === "loading" && (
-        <div className="p-6 rounded-xl bg-[#172B38]/40 border border-[#DAA87B]/20 flex flex-col space-y-4">
-          <div className="flex items-center space-x-3 text-[#C6F68D]">
-            <RefreshCw className="w-4 h-4 animate-spin" />
-            <span className="font-mono text-xs">
+        <div className="p-6 rounded-xl bg-[#192B38]/60 border border-[#45616B]/40 flex flex-col space-y-4">
+          <div className="flex items-center space-x-3 text-[#C7E9AD]">
+            <RefreshCw className="w-4 h-4 animate-spin text-[#C7E9AD]" />
+            <span className="font-body text-sm text-[#F4EADA]">
               Đang tham vấn trí tuệ Gemini... Trải nghiệm truyền thống bên cạnh vẫn đang hiển thị trọn vẹn.
             </span>
           </div>
 
           <div className="space-y-3 animate-pulse pt-2">
-            <div className="h-5 bg-[#172B38] rounded-md w-3/4" />
-            <div className="h-4 bg-[#172B38] rounded-md w-full" />
-            <div className="h-4 bg-[#172B38] rounded-md w-5/6" />
+            <div className="h-5 bg-[#284450] rounded-md w-3/4" />
+            <div className="h-4 bg-[#284450] rounded-md w-full" />
+            <div className="h-4 bg-[#284450] rounded-md w-5/6" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-              <div className="h-24 bg-[#172B38] rounded-lg" />
-              <div className="h-24 bg-[#172B38] rounded-lg" />
+              <div className="h-24 bg-[#284450] rounded-lg" />
+              <div className="h-24 bg-[#284450] rounded-lg" />
             </div>
           </div>
         </div>
@@ -101,29 +100,27 @@ export const AIReading: React.FC<AIReadingProps> = ({
           className="space-y-6"
         >
           {/* Main Title & Overview Banner */}
-          <div className="p-5 rounded-xl bg-gradient-to-br from-[#172B38] via-[#0F162B] to-[#0B1020] border border-[#C6F68D]/40 shadow-sm relative overflow-hidden">
-            <div className="space-y-2">
-              <span className="font-mono text-[10px] tracking-widest text-[#C6F68D] uppercase">
-                Thông điệp tiếp nối
-              </span>
-              <h4 className="font-display text-xl md:text-2xl text-[#E9DFC9] font-medium leading-tight">
-                {aiResult.title}
-              </h4>
-              <p className="font-body text-sm text-[#E9DFC9]/90 leading-relaxed pt-1">
-                {aiResult.overview}
-              </p>
-            </div>
+          <div className="p-5 sm:p-6 rounded-xl bg-[#192B38] border border-[#80BDB2]/40 shadow-sm relative overflow-hidden space-y-2">
+            <span className="font-body text-xs font-bold text-[#C7E9AD] uppercase tracking-wider block">
+              Thông điệp tiếp nối
+            </span>
+            <h4 className="font-display text-xl sm:text-2xl text-[#F4EADA] font-semibold leading-snug">
+              {aiResult.title}
+            </h4>
+            <p className="font-body text-sm sm:text-base text-[#F4EADA]/90 leading-relaxed pt-1">
+              {aiResult.overview}
+            </p>
           </div>
 
           {/* Personalized Interpretation for User Question */}
-          <div className="p-5 rounded-xl bg-[#0B1020]/90 border border-[#DAA87B]/30 space-y-2">
+          <div className="p-5 sm:p-6 rounded-xl bg-[#192B38]/80 border border-[#DAB48A]/35 space-y-2.5">
             <div className="flex items-center space-x-2">
-              <MessageSquareQuote className="w-4 h-4 text-[#DAA87B]" />
-              <span className="font-mono text-xs uppercase tracking-wider text-[#DAA87B]">
+              <MessageSquareQuote className="w-4 h-4 text-[#DAB48A]" />
+              <span className="font-body text-xs font-bold uppercase tracking-wider text-[#DAB48A]">
                 Soi rọi câu hỏi cá nhân: "{userQuestion || "Định hướng cuộc sống"}"
               </span>
             </div>
-            <p className="font-body text-sm text-[#E9DFC9] leading-relaxed">
+            <p className="font-body text-sm sm:text-base text-[#F4EADA]/90 leading-relaxed">
               {aiResult.personalizedInterpretation}
             </p>
           </div>
@@ -131,16 +128,16 @@ export const AIReading: React.FC<AIReadingProps> = ({
           {/* Card Connections */}
           {aiResult.cardConnections && aiResult.cardConnections.length > 0 && (
             <div className="space-y-3">
-              <span className="font-mono text-xs uppercase tracking-wider text-[#B5AA94]">
-                Sợi Dây Liên Kết Giữa Các Lá Bài
+              <span className="font-body text-xs font-bold uppercase tracking-wider text-[#C1CFD0]">
+                Sợi dây liên kết giữa các lá bài
               </span>
               <div className="grid grid-cols-1 gap-2.5">
                 {aiResult.cardConnections.map((conn, idx) => (
                   <div
                     key={idx}
-                    className="p-3.5 rounded-lg bg-[#172B38]/60 border border-[#DAA87B]/20 text-xs text-[#E9DFC9]/90 leading-relaxed font-body"
+                    className="p-4 rounded-lg bg-[#192B38]/70 border border-[#45616B]/50 text-sm text-[#F4EADA]/90 leading-relaxed font-body"
                   >
-                    <span className="font-mono text-[10px] text-[#C6F68D] mr-2">
+                    <span className="font-mono text-xs text-[#C7E9AD] font-bold mr-2">
                       Lá 0{idx + 1}:
                     </span>
                     {conn.connectionText}
@@ -152,18 +149,18 @@ export const AIReading: React.FC<AIReadingProps> = ({
 
           {/* Reflection Questions */}
           {aiResult.reflectionQuestions && aiResult.reflectionQuestions.length > 0 && (
-            <div className="p-4 rounded-xl bg-[#172B38]/50 border border-[#C6F68D]/25 space-y-3">
+            <div className="p-5 rounded-xl bg-[#192B38]/80 border border-[#C7E9AD]/30 space-y-3">
               <div className="flex items-center space-x-2">
-                <HelpCircle className="w-4 h-4 text-[#C6F68D]" />
-                <span className="font-mono text-xs uppercase tracking-wider text-[#C6F68D]">
-                  Câu Hỏi Tự Vấn Từ Gemini
+                <HelpCircle className="w-4 h-4 text-[#C7E9AD]" />
+                <span className="font-body text-xs font-bold uppercase tracking-wider text-[#C7E9AD]">
+                  Câu hỏi tự vấn từ Gemini
                 </span>
               </div>
-              <ul className="space-y-2">
+              <ul className="space-y-2.5">
                 {aiResult.reflectionQuestions.map((q, i) => (
-                  <li key={i} className="flex items-start space-x-2.5 text-xs md:text-sm text-[#E9DFC9]">
-                    <span className="font-mono text-[#DAA87B] mt-0.5">•</span>
-                    <span className="font-body italic">"{q}"</span>
+                  <li key={i} className="flex items-start space-x-2.5 text-sm text-[#F4EADA]">
+                    <span className="font-mono text-[#DAB48A] mt-0.5">•</span>
+                    <span className="font-body italic leading-relaxed">"{q}"</span>
                   </li>
                 ))}
               </ul>
@@ -171,37 +168,37 @@ export const AIReading: React.FC<AIReadingProps> = ({
           )}
 
           {/* Closing Blessing */}
-          <div className="p-4 rounded-xl bg-[#0B1020]/90 border border-[#DAA87B]/30 text-center">
-            <p className="font-display text-base text-[#DAA87B] italic">
+          <div className="p-4 rounded-xl bg-[#192B38]/90 border border-[#DAB48A]/30 text-center">
+            <p className="font-display text-base text-[#DAB48A] italic leading-relaxed">
               "{aiResult.closingMessage}"
             </p>
           </div>
         </motion.div>
       )}
 
-      {/* 3. FALLBACK / ERROR / DISABLED VIEW */}
+      {/* 3. FALLBACK / ERROR / DISABLED VIEW (Graceful Informational State) */}
       {(aiStatus === "disabled" ||
         aiStatus === "error" ||
         aiStatus === "rate_limited" ||
         aiStatus === "timeout") && (
-        <div className="p-5 rounded-xl bg-[#172B38]/40 border border-[#DAA87B]/30 flex flex-col space-y-3">
-          <div className="flex items-start space-x-3">
-            <AlertTriangle className="w-5 h-5 text-[#DAA87B] flex-shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <h5 className="font-mono text-xs uppercase tracking-wider text-[#E9DFC9]">
+        <div className="p-5 sm:p-6 rounded-xl bg-[#192B38]/70 border border-[#DAB48A]/35 flex flex-col space-y-3.5">
+          <div className="flex items-start space-x-3.5">
+            <AlertCircle className="w-5 h-5 text-[#DAB48A] flex-shrink-0 mt-0.5" />
+            <div className="space-y-1.5">
+              <h5 className="font-body text-sm font-semibold text-[#F4EADA]">
                 {aiStatus === "disabled"
-                  ? "Chế Độ Truyền Thống Đang Kích Hoạt"
+                  ? "Chế độ truyền thống đang kích hoạt"
                   : aiStatus === "rate_limited"
-                  ? "Hạn Ngạch AI Tạm Thời Đã Đầy"
+                  ? "Hạn ngạch AI tạm thời đã đầy"
                   : aiStatus === "timeout"
-                  ? "Hết Thời Gian Phản Hồi AI"
-                  : "Dịch Vụ AI Tạm Gián Đoạn"}
+                  ? "Hết thời gian phản hồi AI"
+                  : "Dịch vụ AI tạm gián đoạn"}
               </h5>
-              <p className="font-body text-xs md:text-sm text-[#B5AA94] leading-relaxed">
+              <p className="font-body text-sm text-[#C1CFD0] leading-relaxed">
                 Phần diễn giải AI hiện chưa khả dụng. Bạn vẫn có thể khám phá đầy đủ thông điệp từ bộ bài Tarot truyền thống.
               </p>
               {aiError && (
-                <p className="font-mono text-[11px] text-[#B5AA94]/80 pt-1">
+                <p className="font-mono text-xs text-[#A7BBC0] pt-1">
                   Chi tiết: {aiError}
                 </p>
               )}
@@ -214,10 +211,10 @@ export const AIReading: React.FC<AIReadingProps> = ({
               <button
                 onClick={handleRetryClick}
                 disabled={cooldown > 0}
-                className={`inline-flex items-center space-x-1.5 px-4 py-1.5 rounded-full font-mono text-xs transition-all ${
+                className={`inline-flex items-center space-x-2 px-4 py-2 rounded-full font-body text-xs font-semibold transition-all ${
                   cooldown > 0
-                    ? "bg-[#172B38] text-[#B5AA94]/50 border border-[#DAA87B]/20 cursor-not-allowed"
-                    : "bg-[#172B38] text-[#C6F68D] border border-[#C6F68D]/40 hover:bg-[#172B38]/90 hover:border-[#C6F68D] cursor-pointer"
+                    ? "bg-[#284450] text-[#A7BBC0] border border-[#45616B] cursor-not-allowed"
+                    : "bg-[#284450] text-[#C7E9AD] border border-[#C7E9AD]/40 hover:bg-[#385968] hover:border-[#C7E9AD] cursor-pointer"
                 }`}
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${cooldown > 0 ? "animate-spin" : ""}`} />
@@ -230,4 +227,3 @@ export const AIReading: React.FC<AIReadingProps> = ({
     </div>
   );
 };
-

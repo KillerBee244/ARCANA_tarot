@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Be_Vietnam_Pro, Space_Mono } from "next/font/google";
+import { Fraunces, Be_Vietnam_Pro, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
+const fraunces = Fraunces({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin", "vietnamese"],
-  variable: "--font-cormorant",
+  variable: "--font-fraunces",
   display: "swap",
 });
 
@@ -41,15 +41,14 @@ export default function RootLayout({
     <html
       lang="vi"
       suppressHydrationWarning
-      className={`${cormorant.variable} ${vietnam.variable} ${spaceMono.variable}`}
+      className={`${fraunces.variable} ${vietnam.variable} ${spaceMono.variable}`}
     >
       <body
         suppressHydrationWarning
-        className="bg-[#0B1020] text-[#E9DFC9] font-body antialiased min-h-screen overflow-x-hidden selection:bg-[#C6F68D] selection:text-[#0B1020]"
+        className="bg-[#192B38] text-[#F4EADA] font-body antialiased min-h-screen overflow-x-hidden selection:bg-[#C7E9AD] selection:text-[#111E2C]"
       >
         {children}
       </body>
     </html>
   );
 }
-

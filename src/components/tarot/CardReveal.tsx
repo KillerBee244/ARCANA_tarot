@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { TarotCard } from "./TarotCard";
 import { PopulatedCard } from "@/types/tarot";
-import { Sparkles, ArrowRight, Eye, FastForward } from "lucide-react";
+import { Sparkles, ArrowRight, FastForward } from "lucide-react";
 
 interface CardRevealProps {
   cards: PopulatedCard[];
@@ -36,7 +36,6 @@ export const CardReveal: React.FC<CardRevealProps> = ({ cards, onComplete }) => 
   };
 
   const handleSkipAll = () => {
-    // Reveal all and complete immediately
     setRevealedSet(new Set(cards.map((_, i) => i)));
     setTimeout(() => {
       onComplete();
@@ -44,35 +43,40 @@ export const CardReveal: React.FC<CardRevealProps> = ({ cards, onComplete }) => 
   };
 
   return (
-    <div className="relative w-full min-h-[75vh] flex flex-col items-center justify-center px-4 py-8 select-none">
-      {/* Background Celestial Astrolabe Ring Animation */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-        <div className="w-[500px] h-[500px] rounded-full border border-[#DAA87B]/40 animate-spin-slow" />
-        <div className="absolute w-[360px] h-[360px] rounded-full border border-[#C6F68D]/30 border-dashed animate-spin-reverse-slow" />
+    <div className="relative w-full min-h-[88vh] flex flex-col items-center justify-between px-4 py-6 select-none bg-gradient-to-b from-[#111E2C] via-[#152332] to-[#192B38]">
+      {/* Background Soft Celestial Spotlight */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
+        <div
+          className="w-[600px] h-[600px] rounded-full blur-3xl"
+          style={{
+            background: "radial-gradient(circle, rgba(218, 180, 138, 0.25) 0%, rgba(128, 189, 178, 0.12) 40%, transparent 70%)",
+          }}
+        />
+        <div className="absolute w-[460px] h-[460px] rounded-full border border-[#DAB48A]/20 animate-spin-slow" />
       </div>
 
-      {/* Top Header / Step indicator */}
-      <div className="relative z-10 text-center mb-6">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#172B38]/80 border border-[#DAA87B]/30 mb-2">
-          <Sparkles className="w-3.5 h-3.5 text-[#C6F68D]" />
-          <span className="font-mono text-xs uppercase tracking-wider text-[#E9DFC9]">
+      {/* 1. Top Header & Reveal Progress */}
+      <div className="relative z-10 text-center mt-2 mb-4">
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#284450]/80 border border-[#DAB48A]/40 mb-2.5 backdrop-blur-md shadow-sm">
+          <Sparkles className="w-3.5 h-3.5 text-[#C7E9AD]" />
+          <span className="font-body text-xs font-semibold text-[#F4EADA]">
             Nghi thức Khai Mở: Lá {currentStep + 1} / {cards.length}
           </span>
         </div>
-        <h3 className="font-display text-2xl md:text-3xl text-[#E9DFC9] tracking-wide">
+        <h3 className="font-display text-2xl sm:text-3xl text-[#F4EADA] tracking-wide font-light">
           {currentCard.position.nameVi}
         </h3>
-        <p className="font-body text-xs md:text-sm text-[#B5AA94] max-w-md mx-auto mt-1">
+        <p className="font-body text-xs sm:text-sm text-[#C1CFD0] max-w-md mx-auto mt-1 leading-relaxed">
           {currentCard.position.descriptionVi}
         </p>
       </div>
 
-      {/* Center 3D Focus Card */}
-      <div className="relative z-20 my-4 flex flex-col items-center">
+      {/* 2. Featured Tarot Card in 3D (Increased by 20-35% using size="lg") */}
+      <div className="relative z-20 my-auto flex flex-col items-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentCard.cardId}
-            initial={{ scale: 0.85, opacity: 0, y: 30 }}
+            initial={{ scale: 0.88, opacity: 0, y: 25 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: -20 }}
             transition={{ type: "spring", stiffness: 300, damping: 26 }}
@@ -80,8 +84,10 @@ export const CardReveal: React.FC<CardRevealProps> = ({ cards, onComplete }) => 
           >
             {/* Luminous aura behind card */}
             <div
-              className={`absolute -inset-4 rounded-2xl transition-opacity duration-700 pointer-events-none ${
-                isCurrentRevealed ? "opacity-60 bg-gradient-to-t from-[#C6F68D]/20 via-[#DAA87B]/20 to-transparent blur-xl" : "opacity-0"
+              className={`absolute -inset-6 rounded-3xl transition-opacity duration-700 pointer-events-none ${
+                isCurrentRevealed
+                  ? "opacity-60 bg-gradient-to-t from-[#C7E9AD]/20 via-[#DAB48A]/25 to-transparent blur-2xl"
+                  : "opacity-0"
               }`}
             />
 
@@ -100,19 +106,23 @@ export const CardReveal: React.FC<CardRevealProps> = ({ cards, onComplete }) => 
           </motion.div>
         </AnimatePresence>
 
-        {/* Card Name and Meaning Teaser after Reveal */}
+        {/* 3 & 4. Card Name, Orientation & Short Interpretation */}
         <AnimatePresence>
           {isCurrentRevealed && (
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.5 }}
-              className="text-center mt-5 max-w-md px-4"
+              className="text-center mt-5 max-w-lg px-4"
             >
-              <div className="inline-block px-3 py-1 rounded bg-[#0B1020]/90 border border-[#C6F68D]/40 text-[#C6F68D] font-mono text-xs mb-1">
-                {currentCard.orientation === "upright" ? "Vị trí Thuận (Upright)" : "Vị trí Ngược (Reversed)"}
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#284450] border border-[#DAB48A]/40 text-[#F4EADA] font-body text-xs font-semibold mb-2">
+                <span>{currentCard.card.nameVi}</span>
+                <span className="text-[#A7BBC0]">•</span>
+                <span className={currentCard.orientation === "upright" ? "text-[#C7E9AD]" : "text-amber-300"}>
+                  {currentCard.orientation === "upright" ? "Vị trí Thuận" : "Vị trí Ngược"}
+                </span>
               </div>
-              <p className="font-body text-sm text-[#E9DFC9] leading-relaxed line-clamp-2">
+              <p className="font-body text-sm text-[#F4EADA]/90 leading-relaxed">
                 {currentCard.orientation === "upright"
                   ? currentCard.card.uprightMeaning
                   : currentCard.card.reversedMeaning}
@@ -122,30 +132,29 @@ export const CardReveal: React.FC<CardRevealProps> = ({ cards, onComplete }) => 
         </AnimatePresence>
       </div>
 
-      {/* Action Controls */}
-      <div className="relative z-20 flex items-center space-x-4 mt-6">
+      {/* 5. Continue / Reveal All Controls */}
+      <div className="relative z-20 flex items-center space-x-4 mt-6 mb-2">
         <button
           onClick={handleSkipAll}
-          className="flex items-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-mono text-[#B5AA94] hover:text-[#E9DFC9] hover:bg-[#172B38]/60 transition-colors"
+          className="flex items-center space-x-1.5 px-3.5 py-2 rounded-lg text-xs font-body text-[#C1CFD0] hover:text-[#F4EADA] hover:bg-[#284450]/70 transition-colors cursor-pointer"
         >
-          <FastForward className="w-3.5 h-3.5" />
+          <FastForward className="w-4 h-4 text-[#DAB48A]" />
           <span>Lật tất cả</span>
         </button>
 
         <button
           onClick={handleNext}
           disabled={!isCurrentRevealed}
-          className={`flex items-center space-x-2 px-6 py-2.5 rounded-full font-mono text-xs uppercase tracking-wider font-semibold transition-all duration-300 shadow-md ${
+          className={`flex items-center space-x-2 px-7 py-3 rounded-full font-body text-xs uppercase tracking-wider font-semibold transition-all duration-300 shadow-md ${
             isCurrentRevealed
-              ? "bg-[#C6F68D] text-[#0B1020] hover:bg-[#A0D462] hover:shadow-celestial-glow cursor-pointer"
-              : "bg-[#172B38] text-[#B5AA94]/50 border border-[#DAA87B]/20 cursor-not-allowed"
+              ? "bg-[#C7E9AD] text-[#111E2C] hover:bg-[#A4D283] hover:shadow-celestial-glow cursor-pointer"
+              : "bg-[#284450] text-[#A7BBC0]/50 border border-[#45616B] cursor-not-allowed"
           }`}
         >
-          <span>{isLastCard ? "Xem Diễn Giải Chi Tiết" : "Khai mở lá tiếp theo"}</span>
+          <span>{isLastCard ? "Xem diễn giải chi tiết" : "Khai mở lá tiếp theo"}</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </div>
   );
 };
-
