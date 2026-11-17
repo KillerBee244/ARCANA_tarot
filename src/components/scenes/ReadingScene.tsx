@@ -13,6 +13,7 @@ import { getCardById } from "@/data/tarot/cards";
 import { getSpreadDef } from "@/data/tarot/spreads";
 import { Sparkles, Compass } from "lucide-react";
 import { getCategoryLabelVi } from "@/data/tarot/categories";
+import { copyTextToClipboard } from "@/lib/utils/clipboard";
 
 interface ReadingSceneProps {
   readingId: string;
@@ -123,8 +124,13 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
       );
     }
 
-    navigator.clipboard.writeText(lines.join("\n"));
-    showToast("Đã sao chép toàn bộ kết quả vào bộ nhớ tạm!");
+    copyTextToClipboard(lines.join("\n")).then((ok) => {
+      if (ok) {
+        showToast("Đã sao chép toàn bộ kết quả vào bộ nhớ tạm!");
+      } else {
+        showToast("Không thể sao chép tự động trên trình duyệt này.");
+      }
+    });
   };
 
   return (

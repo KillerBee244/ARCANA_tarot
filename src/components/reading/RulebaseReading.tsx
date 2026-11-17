@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { RulebaseInterpretation } from "@/types/tarot";
 import { BookOpen, Compass, ChevronDown, ChevronUp, Sparkles, ShieldCheck } from "lucide-react";
-import { getCategoryLabelVi } from "@/data/tarot/categories";
+import { getCategoryLabelVi, getCleanViCardName } from "@/data/tarot/categories";
 
 interface RulebaseReadingProps {
   interpretation: RulebaseInterpretation;
@@ -99,38 +99,50 @@ export const RulebaseReading: React.FC<RulebaseReadingProps> = ({ interpretation
                 {/* Collapsible Card Header */}
                 <button
                   onClick={() => toggleExpand(item.card.id)}
-                  className="w-full p-4 flex items-center justify-between text-left cursor-pointer hover:bg-[#F4ECDD]/50 transition-colors"
+                  className="w-full p-4 flex items-center justify-between text-left cursor-pointer hover:bg-[#F4ECDD]/50 transition-colors gap-3"
                 >
-                  <div className="flex items-center space-x-3.5">
-                    <span className="font-mono text-xs font-bold text-[#B58C60] w-5">
+                  {/* Left: Index & Card Info */}
+                  <div className="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1">
+                    <span className="font-mono text-xs sm:text-sm font-bold text-[#B58C60] w-6 flex-shrink-0">
                       0{index + 1}
                     </span>
-                    <div>
-                      <div className="flex items-center space-x-2">
-                        <span className="font-display text-base sm:text-lg text-[#253C44] font-semibold">
-                          {item.card.nameVi}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                        <span className="font-display text-base sm:text-lg text-[#253C44] font-semibold leading-snug">
+                          {getCleanViCardName(item.card.nameVi)}
                         </span>
-                        <span
-                          className={`font-body text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                            isUpright
-                              ? "bg-[#E8DCC9] text-[#253C44] border border-[#D8C8B3]"
-                              : "bg-amber-100 text-amber-900 border border-amber-300"
-                          }`}
-                        >
-                          {isUpright ? "Vị trí Thuận" : "Vị trí Ngược"}
+                        <span className="font-body text-xs text-[#52636A] font-normal italic">
+                          ({item.card.nameEn})
                         </span>
                       </div>
-                      <span className="font-body text-xs text-[#52636A] font-medium">
+                      <span className="font-body text-xs text-[#52636A] font-medium block mt-0.5">
                         Vị trí: {item.position.nameVi}
                       </span>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-1.5 text-[#B58C60]">
-                    <span className="font-body text-xs hidden sm:inline font-medium">
-                      {isExpanded ? "Thu gọn" : "Xem chi tiết"}
+                  {/* Right: Badge & Expand Button (Guaranteed never to wrap or distort) */}
+                  <div className="flex items-center space-x-2.5 sm:space-x-3.5 flex-shrink-0 ml-2">
+                    <span
+                      className={`font-body text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0 shadow-sm border ${
+                        isUpright
+                          ? "bg-[#E8DCC9] text-[#253C44] border-[#D8C8B3]"
+                          : "bg-amber-100 text-amber-900 border-amber-300"
+                      }`}
+                    >
+                      {isUpright ? "Vị trí Thuận" : "Vị trí Ngược"}
                     </span>
-                    {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+
+                    <div className="flex items-center space-x-1 text-[#B58C60] whitespace-nowrap flex-shrink-0">
+                      <span className="font-body text-xs hidden sm:inline font-medium">
+                        {isExpanded ? "Thu gọn" : "Xem chi tiết"}
+                      </span>
+                      {isExpanded ? (
+                        <ChevronUp className="w-4 h-4 flex-shrink-0" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4 flex-shrink-0" />
+                      )}
+                    </div>
                   </div>
                 </button>
 
