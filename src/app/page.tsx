@@ -66,12 +66,12 @@ export default function ArcanaPage() {
           <div className="w-8 h-8 rounded-full bg-[#284450] border border-[#DAB48A]/50 flex items-center justify-center group-hover:border-[#C7E9AD] transition-colors shadow-sm">
             <Sparkles className="w-4 h-4 text-[#C7E9AD]" />
           </div>
-          <div className="flex items-baseline space-x-2">
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:space-x-2">
             <span className="font-display text-xl tracking-wider text-[#F4EADA] font-medium leading-none">
               ARCANA
             </span>
-            <span className="hidden sm:inline-block font-mono text-[10px] tracking-widest text-[#DAB48A] uppercase">
-              ARCHIVE 2.0
+            <span className="font-mono text-[9px] sm:text-[10px] tracking-widest text-[#DAB48A] uppercase">
+              <span className="hidden sm:inline">ARCHIVE 2.0 • </span>CRAFTED BY DIEN VU
             </span>
           </div>
         </div>
@@ -241,13 +241,19 @@ export default function ArcanaPage() {
       />
 
       {/* Footer (Editorial Fraunces & Be Vietnam Pro) */}
-      <footer className="w-full px-6 py-4 border-t border-[#DAB48A]/20 flex flex-col sm:flex-row items-center justify-between text-[#A7BBC0] font-body text-xs space-y-2 sm:space-y-0 bg-[#111E2C]/70">
-        <div>
-          <span className="font-display font-medium text-[#F4EADA]">ARCANA 2.0</span>
-          <span> — Celestial Editorial Archive • </span>
-          <span className="text-[#DAB48A] italic">Mỗi câu hỏi mở ra một vũ trụ</span>
+      <footer className="w-full px-6 py-4 border-t border-[#DAB48A]/20 flex flex-col md:flex-row items-center justify-between text-[#A7BBC0] font-body text-xs gap-3 bg-[#111E2C]/70">
+        <div className="flex flex-col sm:flex-row items-center sm:space-x-2.5 text-center sm:text-left gap-1 sm:gap-0">
+          <div>
+            <span className="font-display font-medium text-[#F4EADA]">ARCANA 2.0</span>
+            <span className="hidden sm:inline"> — Celestial Editorial Archive • </span>
+            <span className="text-[#DAB48A] italic hidden md:inline">Mỗi câu hỏi mở ra một vũ trụ</span>
+          </div>
+          <span className="hidden sm:inline text-[#DAB48A]/40">•</span>
+          <div className="font-mono text-[11px] text-[#C7E9AD] tracking-wider">
+            Designed & Engineered by Dien Vu • Arcana Celestial Archive
+          </div>
         </div>
-        <p className="max-w-md text-center sm:text-right text-[#C1CFD0]">
+        <p className="max-w-md text-center md:text-right text-[#C1CFD0] text-[11px]">
           Thông điệp mang tính chiêm nghiệm và đối thoại nội tâm.
         </p>
       </footer>
