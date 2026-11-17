@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0B1020;
+  --foreground: #E9DFC9;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-vietnam), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Celestial Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B1020;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #172B38;
+  border-radius: 9999px;
+  border: 1px solid rgba(218, 168, 123, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #DAA87B;
+}
+
+/* Hide scrollbar for clean carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 3D Perspective Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Reduced Motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
