@@ -17,6 +17,7 @@ import { copyTextToClipboard } from "@/lib/utils/clipboard";
 
 interface ReadingSceneProps {
   readingId: string;
+  userName?: string;
   question: string;
   category: QuestionCategory;
   spreadType: SpreadType;
@@ -33,6 +34,7 @@ interface ReadingSceneProps {
 
 export const ReadingScene: React.FC<ReadingSceneProps> = ({
   readingId,
+  userName,
   question,
   category,
   spreadType,
@@ -78,6 +80,7 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
   const handleSave = () => {
     const record: ReadingSessionRecord = {
       readingId,
+      userName,
       createdAt: new Date().toISOString(),
       question,
       category,
@@ -99,6 +102,7 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
   const handleCopy = () => {
     const lines = [
       `=== ARCANA: THE ARCHIVE OF POSSIBILITIES ===`,
+      `Lữ khách: ${userName || "Lữ khách"}`,
       `Câu hỏi: "${question || "Trải bài tổng quát"}"`,
       `Lĩnh vực: ${getCategoryLabelVi(category)} | Kiểu trải bài: ${spreadDef.nameVi}`,
       ``,
@@ -155,6 +159,12 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
           "{question || "Thông điệp vũ trụ cho hiện tại"}"
         </h2>
         <div className="flex justify-center items-center space-x-3 text-xs font-body text-[#C1CFD0]">
+          {userName && (
+            <>
+              <span className="text-[#C7E9AD] font-medium">Lữ khách: {userName}</span>
+              <span>•</span>
+            </>
+          )}
           <span className="font-semibold uppercase tracking-wider text-[#DAB48A]">
             LĨNH VỰC: {getCategoryLabelVi(category).toUpperCase()}
           </span>
@@ -177,7 +187,7 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
         {/* Section A: Ancient Wisdom (Parchment Treatment: #F4ECDD, #253C44 text) */}
         <div className="p-6 sm:p-8 rounded-2xl bg-[#F4ECDD] border border-[#D8C8B3] shadow-parchment">
-          <RulebaseReading interpretation={rulebaseResult} />
+          <RulebaseReading interpretation={rulebaseResult} userName={userName} />
         </div>
 
         {/* Section B: Living Interpretation (Elevated Teal Treatment: #284450) */}
@@ -188,6 +198,7 @@ export const ReadingScene: React.FC<ReadingSceneProps> = ({
             aiError={aiError}
             onRetry={onRetryAI}
             userQuestion={question}
+            userName={userName}
           />
         </div>
       </div>

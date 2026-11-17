@@ -6,6 +6,7 @@ import { QuestionCategory, SpreadType } from "@/types/tarot";
 import { Heart, Briefcase, DollarSign, User, HelpCircle, ArrowRight, Sparkles, Layers, Sliders } from "lucide-react";
 
 interface QuestionSceneProps {
+  userName?: string;
   initialQuestion?: string;
   initialCategory?: QuestionCategory;
   initialSpreadType?: SpreadType;
@@ -27,6 +28,7 @@ const CATEGORIES: { id: QuestionCategory; label: string; icon: React.ElementType
 ];
 
 export const QuestionScene: React.FC<QuestionSceneProps> = ({
+  userName = "",
   initialQuestion = "",
   initialCategory = "general",
   initialSpreadType = "three_card",
@@ -70,11 +72,17 @@ export const QuestionScene: React.FC<QuestionSceneProps> = ({
         className="relative w-full max-w-2xl bg-[#223846]/95 border border-[#DAB48A]/40 rounded-2xl p-5 sm:p-7 md:p-9 shadow-2xl backdrop-blur-md"
       >
         {/* Subtle Top Badge */}
-        <div className="flex justify-center mb-4">
+        <div className="flex flex-col items-center justify-center space-y-2 mb-4">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#284450] border border-[#DAB48A]/35 text-[#C7E9AD] font-body text-xs font-medium">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Bước 01 • Khởi tạo ý nguyện</span>
           </div>
+          {userName && (
+            <div className="inline-flex items-center space-x-1.5 px-3 py-0.5 rounded-full bg-[#192B38]/80 border border-[#DAB48A]/25 text-xs font-body">
+              <span className="text-[#DAB48A]/70">Lữ khách:</span>
+              <span className="font-semibold text-[#F4EADA]">{userName}</span>
+            </div>
+          )}
         </div>
 
         {/* Editorial Heading (Fraunces) */}

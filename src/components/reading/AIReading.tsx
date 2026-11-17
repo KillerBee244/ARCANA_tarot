@@ -11,6 +11,7 @@ interface AIReadingProps {
   aiError: string | null;
   onRetry: () => void;
   userQuestion?: string;
+  userName?: string;
 }
 
 export const AIReading: React.FC<AIReadingProps> = ({
@@ -19,6 +20,7 @@ export const AIReading: React.FC<AIReadingProps> = ({
   aiError,
   onRetry,
   userQuestion,
+  userName,
 }) => {
   const [cooldown, setCooldown] = useState<number>(0);
 

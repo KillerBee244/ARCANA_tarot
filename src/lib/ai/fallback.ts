@@ -33,31 +33,34 @@ export function generateMockAiResponse(
   populatedCards: PopulatedCard[],
   spreadType: SpreadType,
   category: QuestionCategory,
-  userQuestion?: string
+  userQuestion?: string,
+  userName?: string
 ): AIStructuredOutput {
   const cardNames = populatedCards.map(
     (c) => `${c.card.nameVi} (${c.orientation === "upright" ? "Thuận" : "Ngược"})`
   );
 
+  const displayName = userName?.trim() || "Lữ khách";
+
   return {
-    title: `[MOCK AI] Khai Mở Vũ Trụ Tâm Hồn: ${category.toUpperCase()}`,
-    overview: `Trải bài ${spreadType === "single" ? "đơn" : "3 lá"} với sự xuất hiện của ${cardNames.join(
+    title: `[MOCK AI] Khai Mở Vũ Trụ: ${category.toUpperCase()} • ${displayName}`,
+    overview: `Chào ${displayName}, các vì tinh tú cho thấy bạn đang băn khoăn về "${userQuestion || "định hướng cuộc sống"}". Trải bài ${spreadType === "single" ? "đơn" : "3 lá"} với sự xuất hiện của ${cardNames.join(
       ", "
     )} tạo nên một bức tranh sâu sắc về hành trình bạn đang trải qua. Dù câu hỏi là gì, vũ trụ luôn phản chiếu chân thực tâm thức hiện tại của bạn.`,
     cardConnections: populatedCards.map((c) => ({
       cardId: c.card.id,
       connectionText: `${c.card.nameVi} ở vị trí ${c.position.nameVi} nhấn mạnh: ${
         c.orientation === "upright" ? c.card.uprightKeywords.join(", ") : c.card.reversedKeywords.join(", ")
-      }. Đây là thông điệp trực tiếp nhắc nhở bạn duy trì sự tỉnh thức.`,
+      }. Đây là thông điệp trực tiếp nhắc nhở ${displayName} duy trì sự tỉnh thức.`,
     })),
-    personalizedInterpretation: `Đối với băn khoăn "${userQuestion || "định hướng cuộc sống"}", sự kết hợp giữa các lá bài cho thấy bạn đang đứng trước thời khắc chuyển hóa quan trọng. Hãy tin vào tiếng nói trực giác và các bước đi thực tế đã được vạch ra.`,
+    personalizedInterpretation: `Chào ${displayName}, đối với băn khoăn "${userQuestion || "định hướng cuộc sống"}", sự kết hợp giữa các lá bài cho thấy bạn đang đứng trước thời khắc chuyển hóa quan trọng. Hãy tin vào tiếng nói trực giác và các bước đi thực tế đã được vạch ra.`,
     reflectionQuestions: [
       "Bước ngoặt lớn nhất bạn đang thực sự khao khát lúc này là gì?",
       "Điều gì đang níu giữ bạn lại và bạn sẵn sàng buông bỏ điều gì?",
       "Làm thế nào để bạn hành động với sự tự tin và lòng can đảm cao nhất?",
     ],
     closingMessage:
-      "Tương lai không phải là định mệnh bất biến, mà là bức tranh do chính những lựa chọn có ý thức của bạn kiến tạo mỗi ngày.",
+      `Tương lai không phải là định mệnh bất biến, mà là bức tranh do chính những lựa chọn có ý thức của ${displayName} kiến tạo mỗi ngày.`,
   };
 }
 

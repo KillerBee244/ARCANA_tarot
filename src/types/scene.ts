@@ -16,6 +16,7 @@ export type SceneState =
 export interface ExperienceState {
   scene: SceneState;
   readingId: string;
+  userName: string;
   question: string;
   category: QuestionCategory;
   spreadType: SpreadType;
@@ -32,7 +33,8 @@ export interface ExperienceState {
 }
 
 export type ExperienceAction =
-  | { type: "ENTER_QUESTION" }
+  | { type: "ENTER_QUESTION"; userName?: string }
+  | { type: "SET_USER_NAME"; userName: string }
   | { type: "SET_QUESTION"; question: string; category: QuestionCategory }
   | { type: "SET_SPREAD_TYPE"; spreadType: SpreadType }
   | { type: "SET_ALLOW_REVERSED"; allowReversed: boolean }

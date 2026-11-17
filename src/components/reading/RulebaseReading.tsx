@@ -8,9 +8,10 @@ import { getCategoryLabelVi, getCleanViCardName } from "@/data/tarot/categories"
 
 interface RulebaseReadingProps {
   interpretation: RulebaseInterpretation;
+  userName?: string;
 }
 
-export const RulebaseReading: React.FC<RulebaseReadingProps> = ({ interpretation }) => {
+export const RulebaseReading: React.FC<RulebaseReadingProps> = ({ interpretation, userName }) => {
   const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
 
   const toggleExpand = (id: string) => {

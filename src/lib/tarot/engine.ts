@@ -19,7 +19,8 @@ export function interpretReadingRulebase(
   selectedCards: SelectedCard[],
   spreadType: SpreadType,
   category: QuestionCategory,
-  userQuestion?: string
+  userQuestion?: string,
+  userName?: string
 ): RulebaseInterpretation {
   const spreadDef = getSpreadDef(spreadType);
 
@@ -124,10 +125,16 @@ export function interpretReadingRulebase(
   });
 
   // 4. Synthesize Overview
+  const greeting = userName?.trim()
+    ? `Chào ${userName.trim()}, các vì tinh tú cho thấy bạn đang băn khoăn về ${
+        userQuestion ? `"${userQuestion}"` : "hành trình hiện tại"
+      }. `
+    : "";
+
   let overviewSynthesis = "";
   if (spreadType === "single") {
     const single = interpretedCards[0];
-    overviewSynthesis = `Trải bài đơn mở ra lá ${single.card.nameVi} (${
+    overviewSynthesis = `${greeting}Trải bài đơn mở ra lá ${single.card.nameVi} (${
       single.orientation === "upright" ? "Vị trí Thuận" : "Vị trí Ngược"
     }). Thông điệp gửi gắm cho bạn: ${single.positionMeaning} Đối với khía cạnh bạn đang bận tâm, ${single.categoryMeaning}`;
   } else {
@@ -135,7 +142,7 @@ export function interpretReadingRulebase(
     const present = interpretedCards.find((c) => c.position.id === "present") || interpretedCards[1];
     const future = interpretedCards.find((c) => c.position.id === "future") || interpretedCards[2];
 
-    overviewSynthesis = `Hành trình trải bài 3 lá cho thấy sự tiếp nối rõ rệt: Từ nền móng ${past.card.nameVi} (${
+    overviewSynthesis = `${greeting}Hành trình trải bài 3 lá cho thấy sự tiếp nối rõ rệt: Từ nền móng ${past.card.nameVi} (${
       past.orientation === "upright" ? "Thuận" : "Ngược"
     }) trong quá khứ, bạn bước vào thực tại được soi rọi bởi ${present.card.nameVi} (${
       present.orientation === "upright" ? "Thuận" : "Ngược"

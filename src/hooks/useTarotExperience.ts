@@ -6,12 +6,23 @@ import { QuestionCategory, SelectedCard, SpreadType } from "@/types/tarot";
 import { shuffleDeck, getRandomOrientation } from "@/lib/tarot/deck";
 import { interpretReadingRulebase } from "@/lib/tarot/engine";
 import { getSpreadDef } from "@/data/tarot/spreads";
+import { getCardById } from "@/data/tarot/cards";
 import { ReadingSessionRecord } from "@/types/reading";
 
 function createInitialState(): ExperienceState {
+  let storedName = "";
+  if (typeof window !== "undefined") {
+    try {
+      storedName = localStorage.getItem("arcana_visitor_name") || "";
+    } catch {
+      // ignore
+    }
+  }
+
   return {
     scene: "PORTAL",
-    readingId: "arcana-session-initial",
+    readingId: `arcana-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    userName: storedName,
     question: "",
     category: "general",
     spreadType: "three_card",
@@ -34,6 +45,13 @@ function tarotReducer(state: ExperienceState, action: ExperienceAction): Experie
       return {
         ...state,
         scene: "QUESTION",
+        ...(action.userName ? { userName: action.userName } : {}),
+      };
+
+    case "SET_USER_NAME":
+      return {
+        ...state,
+        userName: action.userName,
       };
 
     case "SET_QUESTION":
@@ -136,6 +154,7 @@ function tarotReducer(state: ExperienceState, action: ExperienceAction): Experie
     case "RESTART_READING":
       return {
         ...createInitialState(),
+        userName: state.userName,
         scene: "QUESTION",
       };
 
@@ -144,6 +163,7 @@ function tarotReducer(state: ExperienceState, action: ExperienceAction): Experie
         ...state,
         scene: "READING",
         readingId: action.savedSession.readingId,
+        userName: action.savedSession.userName || state.userName,
         question: action.savedSession.question,
         category: action.savedSession.category,
         spreadType: action.savedSession.spreadType,
@@ -170,8 +190,31 @@ export function useTarotExperience() {
   const [state, dispatch] = useReducer(tarotReducer, undefined, createInitialState);
 
   // Transitions
-  const startPortal = useCallback(() => {
-    dispatch({ type: "ENTER_QUESTION" });
+  const startPortal = useCallback(
+    (userName?: string) => {
+      const chosenName = (userName || state.userName || "").trim() || "Lữ khách";
+      dispatch({ type: "ENTER_QUESTION", userName: chosenName });
+
+      // Log visitor entry in background
+      try {
+        fetch("/api/visitors/log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "enter",
+            sessionId: state.readingId,
+            visitorName: chosenName,
+          }),
+        }).catch(() => {});
+      } catch {
+        // ignore
+      }
+    },
+    [state.readingId, state.userName]
+  );
+
+  const setUserName = useCallback((userName: string) => {
+    dispatch({ type: "SET_USER_NAME", userName });
   }, []);
 
   const proceedToDeck = useCallback(
@@ -207,7 +250,8 @@ export function useTarotExperience() {
       question: string,
       category: QuestionCategory,
       spreadType: SpreadType,
-      selectedCards: SelectedCard[]
+      selectedCards: SelectedCard[],
+      userName?: string
     ) => {
       dispatch({ type: "START_AI_REQUEST" });
       try {
@@ -216,6 +260,7 @@ export function useTarotExperience() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             readingId,
+            userName,
             question,
             category,
             spreadType,
@@ -254,15 +299,50 @@ export function useTarotExperience() {
   );
 
   const completeReveal = useCallback(() => {
-    // Generate Rulebase Interpretation synchronously (Phase A)
+    // Generate Rulebase Interpretation synchronously (Phase A) with user name
     const rulebase = interpretReadingRulebase(
       state.selectedCards,
       state.spreadType,
       state.category,
-      state.question
+      state.question,
+      state.userName
     );
 
     dispatch({ type: "COMPLETE_REVEAL", rulebaseResult: rulebase });
+
+    // Asynchronously log reading completion
+    try {
+      const spreadDef = getSpreadDef(state.spreadType);
+      const cardSummaries = state.selectedCards.map((sc, i) => {
+        const cData = getCardById(sc.cardId);
+        const pos = spreadDef.positions.find((p) => p.id === sc.positionId) || spreadDef.positions[i];
+        return {
+          cardId: sc.cardId,
+          nameVi: cData?.nameVi || sc.cardId,
+          nameEn: cData?.nameEn || "",
+          orientation: sc.orientation,
+          positionName: pos?.nameVi || "Trọng tâm",
+        };
+      });
+
+      fetch("/api/visitors/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "complete",
+          sessionId: state.readingId,
+          visitorName: state.userName || "Lữ khách",
+          question: state.question,
+          category: state.category,
+          spreadType: state.spreadType,
+          cards: cardSummaries,
+          aiTitle: rulebase.overviewSynthesis.slice(0, 100),
+          aiOverview: rulebase.overviewSynthesis,
+        }),
+      }).catch(() => {});
+    } catch {
+      // ignore
+    }
 
     // Trigger AI Request asynchronously without blocking Rulebase (Phase B)
     executeAiRequest(
@@ -270,9 +350,18 @@ export function useTarotExperience() {
       state.question,
       state.category,
       state.spreadType,
-      state.selectedCards
+      state.selectedCards,
+      state.userName
     );
-  }, [state.selectedCards, state.spreadType, state.category, state.question, state.readingId, executeAiRequest]);
+  }, [
+    state.selectedCards,
+    state.spreadType,
+    state.category,
+    state.question,
+    state.readingId,
+    state.userName,
+    executeAiRequest,
+  ]);
 
   const retryAI = useCallback(() => {
     executeAiRequest(
@@ -280,9 +369,18 @@ export function useTarotExperience() {
       state.question,
       state.category,
       state.spreadType,
-      state.selectedCards
+      state.selectedCards,
+      state.userName
     );
-  }, [state.readingId, state.question, state.category, state.spreadType, state.selectedCards, executeAiRequest]);
+  }, [
+    state.readingId,
+    state.question,
+    state.category,
+    state.spreadType,
+    state.selectedCards,
+    state.userName,
+    executeAiRequest,
+  ]);
 
   const restartReading = useCallback(() => {
     dispatch({ type: "RESTART_READING" });
@@ -299,6 +397,7 @@ export function useTarotExperience() {
   return {
     state,
     startPortal,
+    setUserName,
     proceedToDeck,
     selectCard,
     deselectCard,
@@ -310,4 +409,3 @@ export function useTarotExperience() {
     navigateScene,
   };
 }
-

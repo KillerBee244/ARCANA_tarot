@@ -156,6 +156,7 @@ export default function ArcanaPage() {
               transition={{ duration: 0.4 }}
             >
               <QuestionScene
+                userName={state.userName}
                 initialQuestion={state.question}
                 initialCategory={state.category}
                 initialSpreadType={state.spreadType}
@@ -215,6 +216,7 @@ export default function ArcanaPage() {
             >
               <ReadingScene
                 readingId={state.readingId}
+                userName={state.userName}
                 question={state.question}
                 category={state.category}
                 spreadType={state.spreadType}
@@ -253,9 +255,18 @@ export default function ArcanaPage() {
             Designed & Engineered by Dien Vu • Arcana Celestial Archive
           </div>
         </div>
-        <p className="max-w-md text-center md:text-right text-[#C1CFD0] text-[11px]">
-          Thông điệp mang tính chiêm nghiệm và đối thoại nội tâm.
-        </p>
+        <div className="flex items-center space-x-3 text-[11px]">
+          <p className="max-w-md text-center md:text-right text-[#C1CFD0]">
+            Thông điệp mang tính chiêm nghiệm và đối thoại nội tâm.
+          </p>
+          <a
+            href="/admin"
+            className="text-[#DAB48A]/60 hover:text-[#C7E9AD] transition-colors whitespace-nowrap cursor-pointer font-mono"
+            title="Trang quản trị truy cập"
+          >
+            ✦ Quản trị
+          </a>
+        </div>
       </footer>
     </main>
   );

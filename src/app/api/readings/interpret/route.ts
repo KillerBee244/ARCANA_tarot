@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { readingId, question, category, spreadType, selectedCards } = parseResult.data;
+    const { readingId, userName, question, category, spreadType, selectedCards } = parseResult.data;
     const spreadDef = getSpreadDef(spreadType);
 
     // 3. Resolve Authoritative Card Data Server-side
@@ -83,6 +83,7 @@ export async function POST(req: NextRequest) {
       spreadType,
       category,
       userQuestion: question,
+      userName,
     });
 
     if (!aiResult.success) {

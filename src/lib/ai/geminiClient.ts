@@ -13,6 +13,7 @@ export interface GenerateAIInterpretationOptions {
   spreadType: SpreadType;
   category: QuestionCategory;
   userQuestion?: string;
+  userName?: string;
 }
 
 export interface AIServiceResult {
@@ -39,7 +40,8 @@ export async function requestGeminiInterpretation(
       options.populatedCards,
       options.spreadType,
       options.category,
-      options.userQuestion
+      options.userQuestion,
+      options.userName
     );
     return {
       success: true,
@@ -88,6 +90,7 @@ Bạn là ARCANA — Giọng nói triết học và thấu cảm của Kho Lưu 
 Nhiệm vụ của bạn: Tạo nên một bản diễn giải Tarot sâu sắc, văn phong giàu chất thơ, tinh tế, đậm tính phản chiếu nội tâm.
 
 THÔNG TIN TRẢI BÀI:
+- Người thỉnh bài (Lữ khách): "${options.userName || "Lữ khách"}"
 - Thể loại câu hỏi: ${options.category.toUpperCase()}
 - Câu hỏi người xem: "${options.userQuestion || "Khám phá thông điệp vũ trụ cho giai đoạn hiện tại"}"
 - Kiểu trải bài: ${options.spreadType === "single" ? "Trải bài 1 lá (Trọng tâm)" : "Trải bài 3 lá (Quá khứ - Hiện tại - Tương lai)"}
@@ -96,20 +99,21 @@ CÁC LÁ BÀI ĐÃ RÚT (CỐ ĐỊNH, KHÔNG ĐƯỢC THAY ĐỔI):
 ${cardsSummary}
 
 YÊU CẦU BẮT BUỘC:
-1. Giữ nguyên danh tính, vị trí và chiều (thuận/ngược) của các lá bài đã rút.
-2. Không khẳng định tương lai là định mệnh chắc chắn. Không đưa ra lời khuyên y tế, tài chính hay pháp lý mang tính tuyệt đối.
-3. Liên kết mạch lạc các lá bài thành một câu chuyện tiếp nối có ý nghĩa với băn khoăn của người xem.
-4. Trả về đúng định dạng JSON theo cấu trúc sau (không kèm markdown ngoài khối JSON):
+1. Xưng hô trực tiếp với người xem bằng danh xưng của họ: "Chào ${options.userName || "bạn"}, các vì tinh tú cho thấy bạn đang băn khoăn về..." ngay trong câu mở đầu của phần overview hoặc personalizedInterpretation.
+2. Giữ nguyên danh tính, vị trí và chiều (thuận/ngược) của các lá bài đã rút.
+3. Không khẳng định tương lai là định mệnh chắc chắn. Không đưa ra lời khuyên y tế, tài chính hay pháp lý mang tính tuyệt đối.
+4. Liên kết mạch lạc các lá bài thành một câu chuyện tiếp nối có ý nghĩa với băn khoăn của người xem.
+5. Trả về đúng định dạng JSON theo cấu trúc sau (không kèm markdown ngoài khối JSON):
 {
   "title": "Tiêu đề ngắn gọn mang tính thi vị và gợi mở (tối đa 100 ký tự)",
-  "overview": "Tổng quan thông điệp và dòng chảy năng lượng chung giữa các lá bài (khoảng 3-4 câu)",
+  "overview": "Chào ${options.userName || "Lữ khách"}, các vì tinh tú cho thấy bạn đang băn khoăn về... [Tổng quan thông điệp và dòng chảy năng lượng chung giữa các lá bài, khoảng 3-4 câu]",
   "cardConnections": [
     {
       "cardId": "ID lá bài chính xác (ví dụ: ${options.populatedCards[0].card.id})",
       "connectionText": "Diễn giải ý nghĩa lá bài trong mối liên hệ với các lá khác và câu hỏi"
     }
   ],
-  "personalizedInterpretation": "Phân tích cá nhân hóa trả lời trực tiếp cho câu hỏi của người xem",
+  "personalizedInterpretation": "Phân tích cá nhân hóa gửi gắm riêng cho ${options.userName || "bạn"} trả lời trực tiếp cho câu hỏi",
   "reflectionQuestions": [
     "Câu hỏi tự vấn 1",
     "Câu hỏi tự vấn 2",

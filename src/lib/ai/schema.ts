@@ -9,6 +9,7 @@ export const SelectedCardSchema = z.object({
 
 export const InterpretApiRequestSchema = z.object({
   readingId: z.string().min(1),
+  userName: z.string().max(100).optional().default(""),
   question: z.string().max(500).default(""),
   category: z.enum(["love", "career", "finance", "self", "general"]),
   spreadType: z.enum(["single", "three_card"]),
