@@ -17,13 +17,31 @@ export function getCategoryLabelVi(cat: QuestionCategory | string): string {
 
 /**
  * Extracts a clean primary Vietnamese name for a Tarot card.
- * For Major Arcana: "Kẻ Khờ", "Nữ Hoàng"
- * For Minor Arcana where nameVi is "Two of Swords (Hai Kiếm)": returns "Hai Kiếm"
+ * Handles both Major Arcana ("Cỗ Chiến Xa (The Chariot)") and Minor Arcana ("Two of Swords (Hai Kiếm)").
  */
-export function getCleanViCardName(nameVi: string): string {
-  const match = nameVi.match(/\(([^)]+)\)/);
-  if (match && match[1]) {
-    return match[1].trim();
+export function getCleanViCardName(nameVi: string, nameEn?: string): string {
+  if (!nameVi) return "";
+  const match = nameVi.match(/^(.*?)\s*\((.*?)\)$/);
+  if (match) {
+    const part1 = match[1].trim(); // outside parentheses
+    const part2 = match[2].trim(); // inside parentheses
+
+    if (nameEn) {
+      if (part1.toLowerCase() === nameEn.toLowerCase()) {
+        return part2;
+      }
+      if (part2.toLowerCase() === nameEn.toLowerCase()) {
+        return part1;
+      }
+    }
+
+    const hasDiacritics = (str: string) =>
+      /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(
+        str
+      );
+    if (hasDiacritics(part2)) return part2;
+    if (hasDiacritics(part1)) return part1;
+    return part1;
   }
   return nameVi.trim();
 }
