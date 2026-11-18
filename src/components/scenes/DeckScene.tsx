@@ -1,9 +1,14 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { CardDeck } from "@/components/tarot/CardDeck";
+import { CylindricalTarotCarousel } from "@/components/tarot/CylindricalTarotCarousel";
+import { CardFlightPortal } from "@/components/tarot/CardFlightPortal";
 import { CardBack } from "@/components/tarot/CardVisuals";
+import {
+  PendingCardFlight,
+  SelectionAnimationPhase,
+} from "@/components/tarot/motionConfig";
 import { getSpreadDef } from "@/data/tarot/spreads";
 import { QuestionCategory, SelectedCard, SpreadType } from "@/types/tarot";
 import { ArrowLeft, Wand2, Sparkles, RefreshCw } from "lucide-react";
@@ -22,21 +27,6 @@ interface DeckSceneProps {
   onBackToQuestion: () => void;
 }
 
-interface FlyingCardState {
-  cardId: string;
-  targetSlotIndex: number;
-  startX: number;
-  startY: number;
-  startWidth: number;
-  startHeight: number;
-  startRotate: number;
-  liftY: number;
-  targetX: number;
-  targetY: number;
-  targetWidth: number;
-  targetHeight: number;
-}
-
 export const DeckScene: React.FC<DeckSceneProps> = ({
   shuffledDeck,
   selectedCards,
@@ -52,129 +42,101 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
   const targetCount = spreadDef.cardCount;
   const isComplete = selectedCards.length === targetCount;
 
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Dedicated refs for up to 3 destination spread slots
+  // Dedicated refs for destination spread slots
   const slotRef0 = useRef<HTMLDivElement>(null);
   const slotRef1 = useRef<HTMLDivElement>(null);
   const slotRef2 = useRef<HTMLDivElement>(null);
   const slotRefs = [slotRef0, slotRef1, slotRef2];
 
-  // Active flight orchestration states
-  const [flyingCard, setFlyingCard] = useState<FlyingCardState | null>(null);
-  const [animatingCardId, setAnimatingCardId] = useState<string | null>(null);
+  // Animation & Flight State Coordinator
+  const [reservedCardId, setReservedCardId] = useState<string | null>(null);
+  const [pendingFlight, setPendingFlight] = useState<PendingCardFlight | null>(null);
   const [isInteractionLocked, setIsInteractionLocked] = useState<boolean>(false);
   const [landingSlotIndex, setLandingSlotIndex] = useState<number | null>(null);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [currentPhase, setCurrentPhase] = useState<SelectionAnimationPhase>("idle");
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  // User taps a card in the 3D cylindrical carousel
+  const handleCarouselCardSelect = useCallback(
+    (cardId: string, _cardEl: HTMLElement, cardRect: DOMRect) => {
+      if (isInteractionLocked || selectedCards.length >= targetCount) return;
 
-  // Card Selection with 5-Stage Cinematic Flight
-  const handleCardSelectStart = (cardId: string, cardRect: DOMRect, fanRotation: number) => {
-    if (isInteractionLocked || selectedCards.length >= targetCount) return;
+      const targetIndex = selectedCards.length;
+      const slotEl = slotRefs[targetIndex]?.current;
 
-    const targetIndex = selectedCards.length;
-    const containerEl = containerRef.current;
-    const slotEl = slotRefs[targetIndex]?.current;
+      if (!slotEl) {
+        celestialAudio.playCardSelect();
+        onCardSelect(cardId);
+        return;
+      }
 
-    // Check user preference for reduced motion
-    const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const slotRect = slotEl.getBoundingClientRect();
 
-    if (!containerEl || !slotEl || prefersReducedMotion) {
+      // Lock interaction and immediately reserve card in carousel
+      setIsInteractionLocked(true);
+      setReservedCardId(cardId);
+      setCurrentPhase("acknowledge");
+
+      setPendingFlight({
+        cardId,
+        destinationIndex: targetIndex,
+        sourceRect: {
+          left: cardRect.left,
+          top: cardRect.top,
+          width: cardRect.width,
+          height: cardRect.height,
+        },
+        targetRect: {
+          left: slotRect.left,
+          top: slotRect.top,
+          width: slotRect.width,
+          height: slotRect.height,
+        },
+      });
+
       celestialAudio.playCardSelect();
+    },
+    [isInteractionLocked, selectedCards.length, targetCount, onCardSelect]
+  );
+
+  // Flight sequence complete handoff
+  const handleFlightComplete = useCallback(
+    (cardId: string, destinationIndex: number) => {
+      // Landing confirmation chime & pulse
+      celestialAudio.playCardLand();
+      setLandingSlotIndex(destinationIndex);
+
+      // Formally commit card to persistent Tarot state
       onCardSelect(cardId);
-      return;
-    }
 
-    const containerRect = containerEl.getBoundingClientRect();
-    const slotRect = slotEl.getBoundingClientRect();
+      // Clean up flight overlay & release interaction lock
+      setPendingFlight(null);
+      setReservedCardId(null);
+      setIsInteractionLocked(false);
+      setCurrentPhase("committed");
 
-    const startX = cardRect.left - containerRect.left;
-    const startY = cardRect.top - containerRect.top;
-    const startWidth = cardRect.width;
-    const startHeight = cardRect.height;
-
-    const targetX = slotRect.left - containerRect.left;
-    const targetY = slotRect.top - containerRect.top;
-    const targetWidth = slotRect.width;
-    const targetHeight = slotRect.height;
-
-    // Dynamic vertical headroom for the dramatic card lift (Stage 2)
-    const liftY = startY - (isMobile ? 55 : 85);
-
-    setIsInteractionLocked(true);
-    setAnimatingCardId(cardId);
-    setFlyingCard({
-      cardId,
-      targetSlotIndex: targetIndex,
-      startX,
-      startY,
-      startWidth,
-      startHeight,
-      startRotate: fanRotation,
-      liftY,
-      targetX,
-      targetY,
-      targetWidth,
-      targetHeight,
-    });
-
-    celestialAudio.playCardSelect();
-  };
-
-  // Called when Stage 5 (Landing settle) completes
-  const handleFlightComplete = () => {
-    if (!flyingCard) return;
-
-    const landedCardId = flyingCard.cardId;
-    const landedIndex = flyingCard.targetSlotIndex;
-
-    // Play tactile celestial affirmation chime on landing
-    celestialAudio.playCardLand();
-
-    // Trigger visual pulse affirmation on destination slot
-    setLandingSlotIndex(landedIndex);
-
-    // Formally commit card into tarot session state
-    onCardSelect(landedCardId);
-
-    // Clean up animation overlay
-    setFlyingCard(null);
-    setAnimatingCardId(null);
-    setIsInteractionLocked(false);
-
-    // Reset landing pulse after brief affirmation
-    setTimeout(() => {
-      setLandingSlotIndex(null);
-    }, 450);
-  };
+      setTimeout(() => {
+        setLandingSlotIndex(null);
+        setCurrentPhase("idle");
+      }, 450);
+    },
+    [onCardSelect]
+  );
 
   // Deselect card with soft return chime
-  const handleSlotCardDeselect = (cardId: string) => {
+  const handleSlotDeselect = (cardId: string) => {
     if (isInteractionLocked) return;
     celestialAudio.playCardDeselect();
     onCardDeselect(cardId);
   };
 
-  // Dynamic context guidance subtitle
+  // Dynamic instructional guidance text
   const getGuidanceText = () => {
     if (isComplete) {
       return "Đã chọn đủ bài định mệnh. Chạm 'Tiến hành Khai Mở' bên dưới để bắt đầu nghi thức";
     }
-
     if (spreadType === "single") {
       return "Lắng nghe trực giác và chạm vào lá bài mang Thông Điệp Vũ Trụ cho bạn";
     }
-
     const currentIdx = selectedCards.length;
     if (currentIdx === 0) {
       return "Chạm vào lá bài bạn cảm nhận rõ nhất để chọn cho Quá Khứ (Gốc rễ)";
@@ -187,10 +149,11 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
 
   return (
     <div
-      ref={containerRef}
+      data-testid="tarot-selection-scene"
+      data-animation-phase={currentPhase}
       className="relative min-h-[88vh] w-full flex flex-col justify-between px-3 sm:px-6 py-3 select-none bg-gradient-to-b from-[#192B38] via-[#152332] to-[#111E2C] overflow-hidden"
     >
-      {/* Top Header: Breadcrumb & Active Reading Tags */}
+      {/* Top Header: Breadcrumb & Active Reading Info */}
       <div className="w-full max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3 border-b border-[#DAB48A]/20 pb-2.5 z-20">
         <button
           onClick={onBackToQuestion}
@@ -235,20 +198,18 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
         </p>
       </div>
 
-      {/* Interactive Curved Fan Deck Stage */}
+      {/* 3D CYLINDRICAL TAROT CAROUSEL STAGE */}
       <div className="my-auto w-full z-10">
-        <CardDeck
+        <CylindricalTarotCarousel
           shuffledDeck={shuffledDeck}
-          selectedCards={selectedCards}
-          maxSelectable={targetCount}
-          animatingCardId={animatingCardId}
+          selectedCardIds={selectedCards.map((sc) => sc.cardId)}
+          reservedCardId={reservedCardId}
           isInteractionLocked={isInteractionLocked}
-          onCardSelectStart={handleCardSelectStart}
-          onCardDeselect={handleSlotCardDeselect}
+          onCardSelect={handleCarouselCardSelect}
         />
       </div>
 
-      {/* Destination Slots Section (3-Card Mode & 1-Card Mode) */}
+      {/* DESTINATION SPREAD SLOTS */}
       <div className="w-full max-w-3xl mx-auto pt-1 pb-2 flex flex-col items-center z-20">
         {spreadType === "three_card" ? (
           /* Three-Card Mode: Quá Khứ, Hiện Tại, Tương Lai */
@@ -257,6 +218,12 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
               const card = selectedCards[idx];
               const isTargetSlot = selectedCards.length === idx && !isComplete;
               const isLanded = landingSlotIndex === idx;
+              const slotTestId =
+                idx === 0
+                  ? "slot-past"
+                  : idx === 1
+                  ? "slot-present"
+                  : "slot-future";
 
               return (
                 <div key={pos.id} className="flex flex-col items-center w-full">
@@ -273,12 +240,17 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
                       {pos.nameVi.split("(")[0].trim()}
                     </span>
                     <span className="font-mono text-[9px] text-[#A7BBC0]/50 hidden sm:inline">
-                      {idx === 0 ? "Gốc rễ" : idx === 1 ? "Thực tại" : "Tiềm năng"}
+                      {idx === 0
+                        ? "Gốc rễ"
+                        : idx === 1
+                        ? "Thực tại"
+                        : "Tiềm năng"}
                     </span>
                   </div>
 
                   <div
                     ref={slotRefs[idx]}
+                    data-testid={slotTestId}
                     className={`w-[78px] h-[126px] sm:w-[94px] sm:h-[152px] rounded-xl border-2 transition-all duration-300 relative flex items-center justify-center ${
                       card
                         ? "border-[#C7E9AD]/80 bg-[#284450]/80 shadow-celestial-glow"
@@ -289,12 +261,12 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
                   >
                     {card ? (
                       <div
-                        onClick={() => handleSlotCardDeselect(card.cardId)}
+                        onClick={() => handleSlotDeselect(card.cardId)}
                         className="w-full h-full cursor-pointer group relative rounded-lg overflow-hidden p-0.5"
                         title="Chạm để đổi lá bài này"
                       >
                         <div className="w-full h-full rounded-lg overflow-hidden shadow-card-3d">
-                          <CardBack />
+                          <CardBack className="w-full h-full" />
                         </div>
                         {/* Hover & Tap overlay to change card */}
                         <div className="absolute inset-0 rounded-lg bg-[#111E2C]/75 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-1">
@@ -308,7 +280,9 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
                       <div className="flex flex-col items-center justify-center text-center p-1 pointer-events-none">
                         <span
                           className={`font-mono text-xs font-semibold ${
-                            isTargetSlot ? "text-[#DAB48A]" : "text-[#A7BBC0]/40"
+                            isTargetSlot
+                              ? "text-[#DAB48A]"
+                              : "text-[#A7BBC0]/40"
                           }`}
                         >
                           0{idx + 1}
@@ -326,7 +300,7 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
             })}
           </div>
         ) : (
-          /* One-Card Mode: Thông Điệp Vũ Trụ (Ceremonial Focal Point) */
+          /* One-Card Mode: Thông Điệp Vũ Trụ (Ceremonial Focal Slot) */
           <div className="flex flex-col items-center w-full max-w-xs mx-auto mb-3">
             <div className="flex flex-col items-center mb-1.5 text-center">
               <span className="font-display text-xs sm:text-sm text-[#DAB48A] font-semibold tracking-wide">
@@ -339,6 +313,7 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
 
             <div
               ref={slotRefs[0]}
+              data-testid="slot-universe"
               className={`w-[110px] h-[176px] sm:w-[136px] sm:h-[220px] rounded-xl border-2 transition-all duration-300 relative flex items-center justify-center ${
                 selectedCards[0]
                   ? "border-[#C7E9AD] bg-[#284450]/90 shadow-celestial-glow"
@@ -347,12 +322,12 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
             >
               {selectedCards[0] ? (
                 <div
-                  onClick={() => handleSlotCardDeselect(selectedCards[0].cardId)}
+                  onClick={() => handleSlotDeselect(selectedCards[0].cardId)}
                   className="w-full h-full cursor-pointer group relative rounded-lg overflow-hidden p-0.5"
                   title="Chạm để đổi lá bài"
                 >
                   <div className="w-full h-full rounded-lg overflow-hidden shadow-card-3d">
-                    <CardBack />
+                    <CardBack className="w-full h-full" />
                   </div>
                   <div className="absolute inset-0 rounded-lg bg-[#111E2C]/75 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-1">
                     <RefreshCw className="w-4 h-4 text-[#C7E9AD] mb-1" />
@@ -376,7 +351,7 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
           </div>
         )}
 
-        {/* Proceed Button (Visible when all cards are gathered) */}
+        {/* Proceed CTA Button */}
         <div className="h-12 flex items-center justify-center">
           <AnimatePresence>
             {isComplete && !isInteractionLocked && (
@@ -399,101 +374,12 @@ export const DeckScene: React.FC<DeckSceneProps> = ({
         </div>
       </div>
 
-      {/* Cinematic Flying Card Overlay: 5 Stages (Focus -> Lift -> Pause -> Guided Flight -> Settle) */}
-      {flyingCard && (
-        <motion.div
-          className="absolute pointer-events-none z-50 rounded-xl"
-          style={{
-            left: 0,
-            top: 0,
-            width: flyingCard.startWidth,
-            height: flyingCard.startHeight,
-            transformOrigin: "center center",
-          }}
-          initial={{
-            x: flyingCard.startX,
-            y: flyingCard.startY,
-            rotate: flyingCard.startRotate,
-            scale: 1,
-            width: flyingCard.startWidth,
-            height: flyingCard.startHeight,
-            filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.4))",
-          }}
-          animate={{
-            x: [
-              flyingCard.startX, // Stage 1 Focus
-              flyingCard.startX, // Stage 2 Lift Upward
-              flyingCard.startX, // Stage 3 Pause Acknowledgment
-              // Stage 4 Guided Arc Flight (mid-flight trajectory)
-              (flyingCard.startX + flyingCard.targetX) / 2 +
-                (flyingCard.startX < flyingCard.targetX ? -14 : 14),
-              flyingCard.targetX, // Stage 4 Slot arrival
-              flyingCard.targetX, // Stage 5 Landing settle
-            ],
-            y: [
-              flyingCard.startY, // Stage 1
-              flyingCard.liftY,  // Stage 2 Lift Upward
-              flyingCard.liftY,  // Stage 3 Pause
-              // Stage 4 Guided Arc Flight (smooth parabolic crest)
-              Math.min(flyingCard.liftY, flyingCard.targetY) - (isMobile ? 18 : 30),
-              flyingCard.targetY, // Stage 4 Slot arrival
-              flyingCard.targetY, // Stage 5 Landing settle
-            ],
-            rotate: [
-              flyingCard.startRotate,
-              0,
-              0,
-              flyingCard.startX < flyingCard.targetX ? 4 : -4,
-              0,
-              0,
-            ],
-            scale: [
-              1,
-              1.15, // Stage 2: Elevated toward viewer
-              1.16, // Stage 3: Ceremonial recognition hover
-              1.08, // Stage 4: Dynamic flight scale
-              1.03, // Stage 5: Arrival cushion
-              1.0,  // Final settle
-            ],
-            width: [
-              flyingCard.startWidth,
-              flyingCard.startWidth,
-              flyingCard.startWidth,
-              (flyingCard.startWidth + flyingCard.targetWidth) / 2,
-              flyingCard.targetWidth,
-              flyingCard.targetWidth,
-            ],
-            height: [
-              flyingCard.startHeight,
-              flyingCard.startHeight,
-              flyingCard.startHeight,
-              (flyingCard.startHeight + flyingCard.targetHeight) / 2,
-              flyingCard.targetHeight,
-              flyingCard.targetHeight,
-            ],
-            filter: [
-              "drop-shadow(0 4px 10px rgba(0,0,0,0.4))",
-              "drop-shadow(0 15px 30px rgba(199,233,173,0.45)) drop-shadow(0 0 20px rgba(218,180,138,0.35))",
-              "drop-shadow(0 18px 35px rgba(199,233,173,0.5)) drop-shadow(0 0 25px rgba(218,180,138,0.4))",
-              "drop-shadow(0 12px 25px rgba(199,233,173,0.4))",
-              "drop-shadow(0 6px 15px rgba(199,233,173,0.3))",
-              "drop-shadow(0 2px 8px rgba(0,0,0,0.3))",
-            ],
-          }}
-          transition={{
-            duration: 1.45,
-            times: [0, 0.25, 0.38, 0.65, 0.88, 1.0],
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          onAnimationComplete={handleFlightComplete}
-        >
-          <div className="w-full h-full rounded-xl overflow-hidden shadow-card-3d border border-[#DAB48A]/60">
-            <CardBack />
-            {/* Celestial shimmer sweep across card face during pause & flight */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[#C7E9AD]/20 to-transparent pointer-events-none animate-pulse" />
-          </div>
-        </motion.div>
-      )}
+      {/* DEDICATED FIXED FLIGHT PORTAL OVERLAY */}
+      <CardFlightPortal
+        flight={pendingFlight}
+        onComplete={handleFlightComplete}
+        onPhaseChange={setCurrentPhase}
+      />
     </div>
   );
 };
