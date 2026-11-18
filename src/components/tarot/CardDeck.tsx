@@ -9,7 +9,9 @@ interface CardDeckProps {
   shuffledDeck: string[]; // 78 card IDs
   selectedCards: SelectedCard[];
   maxSelectable: number;
-  onCardSelect: (cardId: string) => void;
+  animatingCardId?: string | null;
+  isInteractionLocked?: boolean;
+  onCardSelectStart: (cardId: string, cardRect: DOMRect, fanRotation: number) => void;
   onCardDeselect: (cardId: string) => void;
 }
 
@@ -17,7 +19,9 @@ export const CardDeck: React.FC<CardDeckProps> = ({
   shuffledDeck,
   selectedCards,
   maxSelectable,
-  onCardSelect,
+  animatingCardId = null,
+  isInteractionLocked = false,
+  onCardSelectStart,
   onCardDeselect,
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -32,75 +36,52 @@ export const CardDeck: React.FC<CardDeckProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Display count: 18 cards on mobile, 24 on desktop for ideal arc density
+  // Display count: 18 cards on mobile, 24 on desktop for ideal arc density & elegance
   const displayCount = isMobile ? 18 : 24;
   const displayDeck = shuffledDeck.slice(0, displayCount);
 
   const selectedIds = new Set(selectedCards.map((sc) => sc.cardId));
 
-  const handleCardClick = (cardId: string) => {
-    if (selectedIds.has(cardId)) {
-      onCardDeselect(cardId);
-    } else {
-      if (selectedCards.length < maxSelectable) {
-        onCardSelect(cardId);
-      }
-    }
-  };
-
   const total = displayDeck.length;
   const mid = (total - 1) / 2;
 
-  // Geometry multipliers
+  // Fan geometry multipliers tailored for mobile & desktop
   const spreadX = isMobile ? 13.5 : 26;
   const maxRotation = isMobile ? 22 : 28;
   const curveDip = isMobile ? 24 : 36;
 
   return (
-    <div className="relative w-full flex flex-col items-center select-none overflow-hidden py-2">
-      {/* Soft Radial Spotlight Behind Deck */}
+    <div className="relative w-full flex flex-col items-center select-none overflow-visible py-1 sm:py-2">
+      {/* Soft Radial Celestial Spotlight Behind Deck */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[340px] pointer-events-none opacity-50 blur-3xl"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[760px] h-[300px] sm:h-[360px] pointer-events-none opacity-45 blur-3xl"
         style={{
           background:
             "radial-gradient(ellipse at center, rgba(218, 180, 138, 0.22) 0%, rgba(40, 68, 80, 0.35) 50%, transparent 75%)",
         }}
       />
 
-      {/* Selection Status Counter */}
-      <div className="text-center mb-3 sm:mb-5 z-20">
-        <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#284450]/90 border border-[#DAB48A]/40 backdrop-blur-md shadow-sm">
-          <span className="w-2 h-2 rounded-full bg-[#C7E9AD] animate-ping" />
-          <span className="font-body text-xs text-[#F4EADA] font-semibold tracking-wide">
-            Đã chọn {selectedCards.length} / {maxSelectable} lá bài
-          </span>
-        </div>
-        <p className="font-body text-xs text-[#C1CFD0] mt-1.5 px-4">
-          {selectedCards.length < maxSelectable
-            ? "Hãy lắng nghe trực giác và chạm vào lá bài đang thu hút bạn"
-            : "Bạn đã chọn đủ bài. Nhấn 'Tiến hành Khai Mở' bên dưới để bắt đầu nghi thức"}
-        </p>
-      </div>
-
-      {/* UNIFIED 3D CURVED FAN DECK (Responsive for BOTH Desktop & Mobile) */}
+      {/* UNIFIED 3D CURVED FAN DECK */}
       <div
         className="relative flex justify-center items-end w-full max-w-5xl px-2 sm:px-8 perspective-1000 z-10"
-        style={{ height: isMobile ? "240px" : "350px" }}
+        style={{ height: isMobile ? "220px" : "320px" }}
       >
         <div className="relative w-full h-full flex justify-center items-end">
           {displayDeck.map((cardId, index) => {
             const isSelected = selectedIds.has(cardId);
-            const isHovered = hoveredIndex === index;
+            const isFlying = animatingCardId === cardId;
+            const isHovered = !isMobile && hoveredIndex === index && !isInteractionLocked;
 
-            // Arc geometry
+            // Arc geometry calculations
             const normalizedOffset = (index - mid) / mid; // -1 to 1
             const rotationDeg = normalizedOffset * maxRotation;
             const translateX = (index - mid) * spreadX;
             const translateY = Math.abs(normalizedOffset) * curveDip;
 
-            // When selected, the card has flown to the slot below!
-            // In the fan, we show an ethereal dashed ghost placeholder showing where it was drawn from
-            if (isSelected) {
+            // When a card is selected or currently flying to destination slot,
+            // render a subtle celestial dashed phantom slot in the fan.
+            // This leaves the remaining deck 100% visible and unblocked!
+            if (isSelected || isFlying) {
               return (
                 <div
                   key={cardId}
@@ -112,44 +93,49 @@ export const CardDeck: React.FC<CardDeckProps> = ({
                   }}
                 >
                   <div
-                    className={`rounded-xl border border-dashed border-[#C7E9AD]/30 bg-[#284450]/15 ${
-                      isMobile ? "w-[86px] h-[144px]" : "w-[125px] h-[208px]"
+                    className={`rounded-xl border border-dashed border-[#C7E9AD]/35 bg-[#284450]/15 transition-all ${
+                      isMobile ? "w-[84px] h-[138px]" : "w-[125px] h-[208px]"
                     }`}
                   />
                 </div>
               );
             }
 
-            // Normal card in the fan (smoothly shares layoutId with destination slot when selected!)
+            // Normal interactive card resting in the ceremonial fan
             return (
               <motion.div
                 key={cardId}
-                layoutId={`deck-card-${cardId}`}
                 className="absolute origin-bottom cursor-pointer touch-manipulation"
                 style={{
-                  zIndex: isHovered ? 30 : index,
+                  zIndex: isHovered ? 30 : index + 5,
                   transformOrigin: "bottom center",
                 }}
                 animate={{
                   x: translateX,
-                  y: isHovered ? translateY - (isMobile ? 32 : 48) : translateY,
+                  y: isHovered ? translateY - (isMobile ? 26 : 42) : translateY,
                   rotate: isHovered ? rotationDeg * 0.35 : rotationDeg,
                   scale: isHovered ? (isMobile ? 1.08 : 1.15) : 1,
                   opacity: 1,
                 }}
                 transition={{
                   type: "spring",
-                  stiffness: 300,
+                  stiffness: 320,
                   damping: 26,
                 }}
-                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseEnter={() => !isInteractionLocked && setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() => handleCardClick(cardId)}
-                whileTap={{ scale: 0.94 }}
+                onClick={(e) => {
+                  if (isInteractionLocked) return;
+                  if (selectedCards.length >= maxSelectable) return;
+                  setHoveredIndex(null);
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  onCardSelectStart(cardId, rect, rotationDeg);
+                }}
+                whileTap={!isInteractionLocked ? { scale: 0.94 } : undefined}
               >
                 <div
                   className={`rounded-xl transition-all duration-300 ${
-                    isMobile ? "w-[86px] h-[144px]" : "w-[125px] h-[208px]"
+                    isMobile ? "w-[84px] h-[138px]" : "w-[125px] h-[208px]"
                   } ${
                     isHovered
                       ? "ring-1 ring-[#DAB48A] shadow-card-hover"

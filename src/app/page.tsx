@@ -182,7 +182,7 @@ export default function ArcanaPage() {
                 spreadType={state.spreadType}
                 category={state.category}
                 question={state.question}
-                onCardSelect={handleCardSelectWithSound}
+                onCardSelect={selectCard}
                 onCardDeselect={deselectCard}
                 onProceedToReveal={proceedToReveal}
                 onBackToQuestion={() => navigateScene("QUESTION")}
