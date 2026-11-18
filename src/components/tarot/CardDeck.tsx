@@ -55,7 +55,6 @@ export const CardDeck: React.FC<CardDeckProps> = ({
   const spreadX = isMobile ? 13.5 : 26;
   const maxRotation = isMobile ? 22 : 28;
   const curveDip = isMobile ? 24 : 36;
-  const liftDistance = isMobile ? -54 : -72;
 
   return (
     <div className="relative w-full flex flex-col items-center select-none overflow-hidden py-2">
@@ -99,25 +98,49 @@ export const CardDeck: React.FC<CardDeckProps> = ({
             const translateX = (index - mid) * spreadX;
             const translateY = Math.abs(normalizedOffset) * curveDip;
 
+            // When selected, the card has flown to the slot below!
+            // In the fan, we show an ethereal dashed ghost placeholder showing where it was drawn from
+            if (isSelected) {
+              return (
+                <div
+                  key={cardId}
+                  className="absolute origin-bottom pointer-events-none"
+                  style={{
+                    zIndex: 2,
+                    transformOrigin: "bottom center",
+                    transform: `translate(${translateX}px, ${translateY}px) rotate(${rotationDeg}deg)`,
+                  }}
+                >
+                  <div
+                    className={`rounded-xl border border-dashed border-[#C7E9AD]/30 bg-[#284450]/15 ${
+                      isMobile ? "w-[86px] h-[144px]" : "w-[125px] h-[208px]"
+                    }`}
+                  />
+                </div>
+              );
+            }
+
+            // Normal card in the fan (smoothly shares layoutId with destination slot when selected!)
             return (
               <motion.div
                 key={cardId}
+                layoutId={`deck-card-${cardId}`}
                 className="absolute origin-bottom cursor-pointer touch-manipulation"
                 style={{
-                  zIndex: isSelected ? 40 : isHovered ? 30 : index,
+                  zIndex: isHovered ? 30 : index,
                   transformOrigin: "bottom center",
                 }}
                 animate={{
                   x: translateX,
-                  y: isSelected ? liftDistance : isHovered ? translateY - (isMobile ? 32 : 48) : translateY,
-                  rotate: isSelected ? 0 : isHovered ? rotationDeg * 0.35 : rotationDeg,
-                  scale: isSelected ? 1.1 : isHovered ? (isMobile ? 1.08 : 1.15) : 1,
-                  opacity: isSelected ? 0.95 : 1,
+                  y: isHovered ? translateY - (isMobile ? 32 : 48) : translateY,
+                  rotate: isHovered ? rotationDeg * 0.35 : rotationDeg,
+                  scale: isHovered ? (isMobile ? 1.08 : 1.15) : 1,
+                  opacity: 1,
                 }}
                 transition={{
                   type: "spring",
-                  stiffness: 340,
-                  damping: 24,
+                  stiffness: 300,
+                  damping: 26,
                 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
@@ -128,9 +151,7 @@ export const CardDeck: React.FC<CardDeckProps> = ({
                   className={`rounded-xl transition-all duration-300 ${
                     isMobile ? "w-[86px] h-[144px]" : "w-[125px] h-[208px]"
                   } ${
-                    isSelected
-                      ? "ring-2 ring-[#C7E9AD] shadow-celestial-glow"
-                      : isHovered
+                    isHovered
                       ? "ring-1 ring-[#DAB48A] shadow-card-hover"
                       : "shadow-card-3d"
                   }`}
@@ -138,7 +159,7 @@ export const CardDeck: React.FC<CardDeckProps> = ({
                   <TarotCard
                     size={isMobile ? "xs" : "sm"}
                     className="w-full h-full pointer-events-none"
-                    isSelected={isSelected}
+                    isSelected={false}
                   />
                 </div>
               </motion.div>
